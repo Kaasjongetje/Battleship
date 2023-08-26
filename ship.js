@@ -1,6 +1,7 @@
 export default class Ship {
-    constructor (size) {
+    constructor (size, direction) {
         this.size = size;
+        this.direction = direction;
         this.hits = 0;
     }
 
@@ -10,6 +11,28 @@ export default class Ship {
 
     isSunk() {
         return this.hits >= this.size;
+    }
+
+    getLocations (location) {
+        const [rowIncrement, columnIncrement] = Ship.DIRECTIONS[this.direction];
+ 
+        let row = location[0];
+        let column = location[1];
+ 
+        const locations = [];
+ 
+        for (let i = 0; i < this.size; i++) {
+         locations.push([row, column]);
+         row += rowIncrement;
+         column += columnIncrement;
+        }
+ 
+        return locations;
+     }
+
+    static DIRECTIONS = {
+        'horizontal': [0, 1],
+        'vertical': [-1, 0]
     }
 
 }
