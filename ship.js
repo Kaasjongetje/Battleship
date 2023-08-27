@@ -2,6 +2,7 @@ export default class Ship {
     constructor (size, direction) {
         this.size = size;
         this.direction = direction;
+        this.location = null;
         this.hits = 0;
     }
 

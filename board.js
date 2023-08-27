@@ -24,6 +24,17 @@ export default class Board {
         }
     }
 
+    remove (ship) {
+        const locations = ship.getLocations(ship.location);
+
+        locations.forEach((location) => {
+            const tile = this.tiles[location[0]][location[1]];
+            tile.ship = null;
+        });
+
+        ship.location = null;
+    }
+
     place (ship, location) {
         const locations = ship.getLocations(location);
 
@@ -31,6 +42,8 @@ export default class Board {
             const tile = this.tiles[location[0]][location[1]];
             tile.ship = ship;
         });
+
+        ship.location = location;
     }
 
     canPlace (ship, location) {

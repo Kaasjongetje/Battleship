@@ -9,6 +9,10 @@ const ship3 = new Ship(3, 'horizontal');
 // Schip plaatsen
 board.place(ship, [0, 0]);
 
+test('De locatie van het schip wordt aangepast', () => {
+    expect(ship.location).toEqual([0, 0]);
+});
+
 test('De eerste tile behoort bij het schip', () => {
     expect(board.tiles[0][0].ship).toEqual(ship);
 });
