@@ -4,6 +4,16 @@ import Ship from "./ship.js";
 export default class Board {
     static size = 10;
 
+    print() {
+        this.tiles.forEach((row) => {
+            let rowString = '';
+            row.forEach((tile) => {
+                rowString += tile.isOccupied() ? 'X' : '-';
+            });
+            console.log(rowString);
+        });
+    }
+
     constructor() {
         this.tiles = [];
         for (let i = 0; i < Board.size; i++) {
@@ -12,6 +22,15 @@ export default class Board {
                 this.tiles[i][j] = new Tile();
             }
         }
+    }
+
+    place (ship, location) {
+        const locations = ship.getLocations(location);
+
+        locations.forEach((location) => {
+            const tile = this.tiles[location[0]][location[1]];
+            tile.ship = ship;
+        });
     }
 
     canPlace (ship, location) {
