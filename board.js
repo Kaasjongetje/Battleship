@@ -20,19 +20,11 @@ export default class Board {
 
     isSuitableLocation (ship, location, isDesirable) {
         const locations = ship.getLocations(location);
-
         for (const location of locations) {
-            if (!Board.isValidLocation(location)) {
-                return false;
-            }
-
+            if (!Board.isValidLocation(location)) return false;
             const tile = this.tiles[location[0]][location[1]];
-
-            if (!isDesirable(tile)) {
-                return false;
-            }
+            if (!isDesirable(tile)) return false;
         }
-
         return true;
     }
 
