@@ -31,6 +31,10 @@ export default class Ship {
         return locations;
      }
 
+     rotate() {
+        this.direction === 'horizontal' ? this.direction = 'vertical' : this.direction = 'horizontal';
+     }
+
     static DIRECTIONS = {
         'horizontal': [0, 1],
         'vertical': [-1, 0]
