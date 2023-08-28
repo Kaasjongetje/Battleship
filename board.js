@@ -22,8 +22,12 @@ export default class Board {
                 this.tiles[i][j] = new Tile();
             }
         }
+        this.ships = [];
     }
 
+    allShipsSunk() {
+        
+    }
 
     attack (location) {
         this.tiles[location[0]][location[1]].attacked = true;

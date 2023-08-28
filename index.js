@@ -1,12 +1,11 @@
 import Ship from "./ship.js";
 import Board from "./board.js";
+import Player from "./player.js";
 
-const ship = new Ship(2, 'vertical');
-const ship2 = new Ship(3, 'horizontal');
-const board = new Board();
+// Naam krijgen van form
+const player = new Player("Kaas"); 
+const computer = new Player("The Computer");
 
-board.place(ship, [0, 0]);
-
-board.print();
-console.log(board.canPlace(ship2, [4, 0]));
+let mode = 'preparation';
+let current = player;
 

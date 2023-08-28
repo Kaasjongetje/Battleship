@@ -1,5 +1,39 @@
 # TODO
 
+- bij attack() ervoor zorgen dat schepen gehit worden
+- allShipsSunk
 - Game loop zonder de user interface / Bedenken hoe de user functies zoals canPlace, place etc. gaat uitvoeren
 - De todo nog verder uitbreiden
+
+# Game Loop
+
+1. Krijg de naam van de speler
+2. Laat de speler zijn boten plaatsen
+3. Laat de speler en computer om de beurt aanvallen
+4. Laat een Play Again button zien als iemand gewonnen heeft
+5. Zodra je op de Play Again button klikt ga je terug naar stap 2
+
+# Functies
+
+- rotate:  scrollen op het schip -> wheel
+- canPlace:  als je hovert over een vakje -> dragover
+- place:  als je loslaat op een vakje -> dragend
+- remove:  als je een schip wegdragt van een vakje -> dragstart
+- attack:  als je klikt op een vakje -> click
+
+# Variables
+
+- een variable die bijhoudt of je in de voorbereidingsfase zit of in de speelfase
+- een variable die bijhoudt wiens beurt het is
+
+# Pseudocode voor een beurt
+
+1. Controleer of de plek waar een speler wilt aanvallen goed is
+2. Val die plek aan
+3. Kijk of het een schip was
+4. Kijk of dat schip nu gezonken is
+5. Kijk of het spel daardoor gewonnen is
+6. Als de speler er niet door wint dan laat hem nog eens spelen
+
+
 
