@@ -8,7 +8,7 @@ export default class Board {
         this.tiles.forEach((row) => {
             let rowString = '';
             row.forEach((tile) => {
-                rowString += tile.isOccupied() ? 'X' : '-';
+                rowString += tile.attacked ? 'X' : '-';
             });
             console.log(rowString);
         });
@@ -22,6 +22,15 @@ export default class Board {
                 this.tiles[i][j] = new Tile();
             }
         }
+    }
+
+
+    attack (location) {
+        this.tiles[location[0]][location[1]].attacked = true;
+    }
+
+    canAttack (location) {
+        return !this.tiles[location[0]][location[1]].attacked;
     }
 
     remove (ship) {
