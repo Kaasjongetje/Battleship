@@ -15,18 +15,8 @@ export default class Board {
     }
 
     constructor() {
-        this.tiles = [];
-        for (let i = 0; i < Board.size; i++) {
-            this.tiles[i] = [];
-            for (let j = 0; j < Board.size; j++) {
-                this.tiles[i][j] = new Tile();
-            }
-        }
-        this.ships = [];
-        for (const shipName in Ship.SHIPS) {
-            const shipLength = Ship.SHIPS[shipName];
-            this.ships.push(new Ship(shipLength, 'horizontal', shipName));
-        }
+        this.initializeTiles();
+        this.initializeShips();
     }
 
     getShip (location) {
@@ -89,6 +79,24 @@ export default class Board {
 
     getTile (location) {
         return this.tiles[location[0]][location[1]];
+    }
+
+    initializeTiles() {
+        this.tiles = [];
+        for (let i = 0; i < Board.size; i++) {
+            this.tiles[i] = [];
+            for (let j = 0; j < Board.size; j++) {
+                this.tiles[i][j] = new Tile();
+            }
+        }
+    }
+
+    initializeShips() {
+        this.ships = [];
+        for (const shipName in Ship.SHIPS) {
+            const shipLength = Ship.SHIPS[shipName];
+            this.ships.push(new Ship(shipLength, 'horizontal', shipName));
+        }
     }
 
 }
