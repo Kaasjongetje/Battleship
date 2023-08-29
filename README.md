@@ -1,7 +1,21 @@
 # TODO
 
+1. Functionaliteit
 - bij attack() ervoor zorgen dat schepen gehit worden
 - allShipsSunk
+
+2. AI
+- Algoritmes verzinnen
+- Kans berekenen bij plek waar een nog niet gezonken schip is
+- !! Als je een schip hebt gevonden, hoe bereken je dan welke van de omliggende tiles de grootste kans heeft op het schip
+- Tile met grootste kans
+- Schepen aanvallen totdat het schip gezonken is
+
+3. DOM
+- Bedenk het design voor Form, Preparation, het echte spel en het einde, alleen HTML en CSS
+- Bedenk hoe JS die dingen kan genereren en welke informatie die functies daarvoor nodig hebben
+
+4. Game Loop
 - Game loop zonder de user interface / Bedenken hoe de user functies zoals canPlace, place etc. gaat uitvoeren
 - De todo nog verder uitbreiden
 

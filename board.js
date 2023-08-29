@@ -30,7 +30,9 @@ export default class Board {
     }
 
     attack (location) {
-        this.tiles[location[0]][location[1]].attacked = true;
+        const tile = this.tiles[location[0]][location[1]];
+        tile.attacked = true;
+        if (tile.ship !== null) tile.ship.hit();
     }
 
     canAttack (location) {
