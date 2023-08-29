@@ -25,6 +25,10 @@ export default class Board {
         this.ships = [];
     }
 
+    getShip (location) {
+        return this.tiles[location[0]][location[1]].ship;
+    }
+
     allShipsSunk() {
         return this.ships.every(ship => ship.isSunk());
     }
@@ -77,6 +81,10 @@ export default class Board {
 
     static isValidLocation (location) {
         return 0 <= location[0] && location[0] < Board.size && 0 <= location[1] && location[1] < Board.size;
+    }
+
+    getTile (location) {
+        
     }
 
 }
