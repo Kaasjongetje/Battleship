@@ -26,7 +26,7 @@ export default class Board {
     }
 
     getShip (location) {
-        return this.tiles[location[0]][location[1]].ship;
+        return this.getTile(location).ship;
     }
 
     allShipsSunk() {
@@ -34,20 +34,20 @@ export default class Board {
     }
 
     attack (location) {
-        const tile = this.tiles[location[0]][location[1]];
+        const tile = this.getTile(location);
         tile.attacked = true;
         if (tile.ship !== null) tile.ship.hit();
     }
 
     canAttack (location) {
-        return !this.tiles[location[0]][location[1]].attacked;
+        return !this.getTile(location).attacked;
     }
 
     remove (ship) {
         const locations = ship.getLocations(ship.location);
 
         locations.forEach((location) => {
-            const tile = this.tiles[location[0]][location[1]];
+            const tile = this.getTile(location);
             tile.ship = null;
         });
 
@@ -58,7 +58,7 @@ export default class Board {
         const locations = ship.getLocations(location);
 
         locations.forEach((location) => {
-            const tile = this.tiles[location[0]][location[1]];
+            const tile = this.getTile(location);
             tile.ship = ship;
         });
 
@@ -73,7 +73,7 @@ export default class Board {
         const locations = ship.getLocations(location);
         for (const location of locations) {
             if (!Board.isValidLocation(location)) return false;
-            const tile = this.tiles[location[0]][location[1]];
+            const tile = this.getTile(location);
             if (!isDesirable(tile)) return false;
         }
         return true;
@@ -84,7 +84,7 @@ export default class Board {
     }
 
     getTile (location) {
-        
+        return this.tiles[location[0]][location[1]];
     }
 
 }
