@@ -1,7 +1,8 @@
 export default class Ship {
-    constructor (size, direction) {
+    constructor (size, direction, name) {
         this.size = size;
         this.direction = direction;
+        this.name = name;
         this.location = null;
         this.hits = 0;
     }
@@ -38,6 +39,14 @@ export default class Ship {
     static DIRECTIONS = {
         'horizontal': [0, 1],
         'vertical': [-1, 0]
+    }
+
+    static SHIPS = {
+        'Destroyer': 2,
+        'Submarine': 3,
+        'Cruiser': 3,
+        'Battleship': 4,
+        'Carrier': 5
     }
 
 }

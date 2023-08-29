@@ -8,4 +8,3 @@ const computer = new Player("The Computer");
 
 let mode = 'preparation';
 let current = player;
-

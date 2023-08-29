@@ -23,6 +23,10 @@ export default class Board {
             }
         }
         this.ships = [];
+        for (const shipName in Ship.SHIPS) {
+            const shipLength = Ship.SHIPS[shipName];
+            this.ships.push(new Ship(shipLength, 'horizontal', shipName));
+        }
     }
 
     getShip (location) {

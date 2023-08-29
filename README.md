@@ -1,5 +1,9 @@
 # TODO
 
+- Schepen-object in board.js
+- Schepen initialiseren
+- constructor cleaner maken
+
 2. AI
 - Algoritmes verzinnen
 - Kans berekenen bij plek waar een nog niet gezonken schip is
