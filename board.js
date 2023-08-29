@@ -26,7 +26,7 @@ export default class Board {
     }
 
     allShipsSunk() {
-        
+        return this.ships.every(ship => ship.isSunk());
     }
 
     attack (location) {

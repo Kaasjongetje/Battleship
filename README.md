@@ -1,9 +1,5 @@
 # TODO
 
-1. Functionaliteit
-- bij attack() ervoor zorgen dat schepen gehit worden
-- allShipsSunk
-
 2. AI
 - Algoritmes verzinnen
 - Kans berekenen bij plek waar een nog niet gezonken schip is
