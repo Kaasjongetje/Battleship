@@ -1,5 +1,12 @@
 # TODO
 
+- isSuitableLocation aanpassen en canPlace
+- ship sizes functie voor ai
+- bereken functie voor ai
+- functie die array met hoogste kans vakjes returnt
+
+[2] Schip vind algoritme voor AI
+
 2. AI
 - Algoritmes verzinnen
 - Kans berekenen bij plek waar een nog niet gezonken schip is

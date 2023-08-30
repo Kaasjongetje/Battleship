@@ -60,11 +60,10 @@ export default class Board {
     }
 
     canPlace (ship, location) {
-        return this.isSuitableLocation(ship, location, (tile) => !tile.isOccupied());
+        return this.isSuitableLocation(ship.getLocations(location), (tile) => !tile.isOccupied());
     }
 
-    isSuitableLocation (ship, location, isDesirable) {
-        const locations = ship.getLocations(location);
+    isSuitableLocation (locations, isDesirable) {
         for (const location of locations) {
             if (!Board.isValidLocation(location)) return false;
             const tile = this.getTile(location);
