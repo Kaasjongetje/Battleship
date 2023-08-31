@@ -60,17 +60,19 @@ export default class Board {
     }
 
     canPlace (ship, location) {
-        return this.isSuitableLocation(ship.getLocations(location), (tile) => !tile.isOccupied());
-    }
-
-    isSuitableLocation (locations, isDesirable) {
-        for (const location of locations) {
+        return ship.getLocations(location).every((location) => {
             if (!Board.isValidLocation(location)) return false;
             const tile = this.getTile(location);
-            if (!isDesirable(tile)) return false;
-        }
-        return true;
+            return !tile.isOccupied();
+        });
     }
+
+    // isSuitableLocation (location, isDesirable) {
+    //     if (!Board.isValidLocation(location)) return false;
+    //     const tile = this.getTile(location);
+    //     if (!isDesirable(tile)) return false;
+    //     return true;
+    // }
 
     static isValidLocation (location) {
         return 0 <= location[0] && location[0] < Board.size && 0 <= location[1] && location[1] < Board.size;
