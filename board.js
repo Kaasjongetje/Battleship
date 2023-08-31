@@ -66,14 +66,7 @@ export default class Board {
             return !tile.isOccupied();
         });
     }
-
-    // isSuitableLocation (location, isDesirable) {
-    //     if (!Board.isValidLocation(location)) return false;
-    //     const tile = this.getTile(location);
-    //     if (!isDesirable(tile)) return false;
-    //     return true;
-    // }
-
+    
     static isValidLocation (location) {
         return 0 <= location[0] && location[0] < Board.size && 0 <= location[1] && location[1] < Board.size;
     }
