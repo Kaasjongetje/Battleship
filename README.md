@@ -1,7 +1,5 @@
 # TODO
 
-- isSuitableLocation aanpassen en canPlace
-- ship sizes functie voor ai
 - bereken functie voor ai
 - functie die array met hoogste kans vakjes returnt
 
