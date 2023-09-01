@@ -36,6 +36,20 @@ export default class Ship {
         this.direction === 'horizontal' ? this.direction = 'vertical' : this.direction = 'horizontal';
      }
 
+     initializeShips() {
+        this.ships = [];
+        
+    }
+
+    static createShips() {
+        const ships = [];
+        for (const shipName in Ship.SHIPS) {
+            const shipLength = Ship.SHIPS[shipName];
+            ships.push(new Ship(shipLength, 'horizontal', shipName));
+        }
+        return ships;
+    }
+
     static DIRECTIONS = {
         'horizontal': [0, 1],
         'vertical': [-1, 0]
