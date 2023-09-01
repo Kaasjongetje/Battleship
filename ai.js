@@ -29,19 +29,20 @@ export default class AI {
     generateProbabilityMap() {
         const probabilityMap = Board.createMap(() => 0);
         for (const ship of this.getPotentialShips()) {
+            const rowStart = ship.direction === 'horizontal' ? 0 : ship.size - 1;
             const maxRow = ship.direction === 'horizontal' ? Board.size - 1 : Board.size - ship.size;
             const maxCell = ship.direction === 'horizontal' ? Board.size - ship.size : Board.size - 1;
 
-            for (let row = 0; row <= maxRow; row++) {
+            for (let row = rowStart; row <= maxRow; row++) {
                 for (let cell = 0; cell <= maxCell; cell++) {
-                    const locations = ship.getLocations([row, cell]);
-                    console.log(locations);
-                    if (locations.every((location) => !this.board.getTile(location).attacked)) {
-                        locations.forEach((location) => probabilityMap[location[0]][location[1]] += 1);
+                    const area = ship.getLocations([row, cell]);
+                    if (this.board.isSuitableArea(area, (tile) => !tile.attacked)) {
+                        area.forEach((location) => probabilityMap[location[0]][location[1]] += 1);
                     }
                 }
             }
         }
+        return probabilityMap;
     }
 
 }

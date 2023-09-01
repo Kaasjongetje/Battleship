@@ -1,5 +1,9 @@
 # TODO
 
+- initializeShips en createEmptyProb... samenvoegen
+- forEachTile bij board
+- isSuitableArea
+
 - bereken functie voor ai
 - functie die array met hoogste kans vakjes returnt
 
