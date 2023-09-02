@@ -6,6 +6,30 @@ export default class AI {
         this.board = board;
     }
 
+    getBestMove() {
+        
+    }
+
+    getHighestProbabilityLocations() {
+        const probabilityMap = this.generateProbabilityMap();
+        printArray(probabilityMap);
+        let highestChance = 0;
+        let highestProbabilityLocations = [];
+        for (let i = 0; i < Board.size; i++) {
+            for (let j = 0; j < Board.size; j++) {
+                if (probabilityMap[i][j] < highestChance) continue;
+
+                if (probabilityMap[i][j] > highestChance) {
+                    highestChance = probabilityMap[i][j];
+                    highestProbabilityLocations = [];
+                }
+
+                highestProbabilityLocations.push([i, j]);
+            }
+        }
+        return highestProbabilityLocations;
+    }
+
     getRemainingShipSizes() {
         const sizes = [];
         this.board.ships.forEach((ship) => {
@@ -43,4 +67,14 @@ export default class AI {
         return probabilityMap;
     }
 
+}
+
+function printArray (array) {
+    for (let i = 0; i < array.length; i++) {
+        let string = '';
+        for (let j = 0; j < array[i].length; j++) {
+            string += `(${array[i][j] < 10 ? array[i][j].toString() + ' ' : array[i][j].toString()})`;
+        }
+        console.log(string);
+    }
 }

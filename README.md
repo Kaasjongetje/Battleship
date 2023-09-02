@@ -1,8 +1,7 @@
 # TODO
 
 - forEachTile bij board
-
-- functie die array met hoogste kans vakjes returnt
+- een functie die van dat array een random locatie uitkiest
 
 [2] Schip vind algoritme voor AI
 

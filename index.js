@@ -15,14 +15,9 @@ import AI from "./ai.js";
 const board = new Board();
 const ai = new AI(board);
 
-printArray(ai.generateProbabilityMap());
+board.tiles[4][4].attacked = true;
+board.tiles[5][5].attacked = true;
 
-function printArray (array) {
-    for (let i = 0; i < array.length; i++) {
-        let string = '';
-        for (let j = 0; j < array[i].length; j++) {
-            string += `(${array[i][j] < 10 ? array[i][j].toString() + ' ' : array[i][j].toString()})`;
-        }
-        console.log(string);
-    }
-}
+console.log(ai.getHighestProbabilityLocations());
+
+
