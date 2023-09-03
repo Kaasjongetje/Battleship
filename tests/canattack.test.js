@@ -12,4 +12,6 @@ test('Je kunt een geattackte tile niet aanvallen', () => {
     expect(board.canAttack([0, 0])).toBe(false);
 });
 
-// De eerste tile is aangepast
+test('Je kunt geen illegale locaties aanvallen', () => {
+    expect(board.canAttack([-1, 0])).toBe(false);
+});
