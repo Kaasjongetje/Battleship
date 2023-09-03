@@ -1,16 +1,45 @@
 # TODO
 
-- forEachTile bij board
-- een functie die van dat array een random locatie uitkiest
+- chooseDirection
+- goForward
+- isDeadEnd
+- isShipPart
+- isTargetShip
 
-[2] Schip vind algoritme voor AI
+- forEachTile(callback, from, to) >>> forEachTile((tile) => tile.attacked = true, [0, 0], [9, 9])
+
 
 2. AI
-- Algoritmes verzinnen
-- Kans berekenen bij plek waar een nog niet gezonken schip is
-- !! Als je een schip hebt gevonden, hoe bereken je dan welke van de omliggende tiles de grootste kans heeft op het schip
-- Tile met grootste kans
-- Schepen aanvallen totdat het schip gezonken is
+
+Zoek vanuit eerste deel in schipdelen als dat kan
+    Kies de een richting die niet kans 0 heeft
+        Ga in die richting
+            Doodgelopen?
+                Kies richting
+
+            Deel van schip gevonden?
+                Aantal stappen in richting meer dan grootste schip?
+                    Kies richting
+
+                Sla het deel op in schipdelen
+            
+            Heel schip gevonden?
+                Schip uit schipdelen
+
+                Ander schip?
+                    Kies richting
+
+                Schip van eerste deel?
+                    Stop
+
+Beste richting kiezen
+1. Is er een van de 4 locaties rondom het schip bekend dat daar ook een schip ligt? Is dat schip gezonken of nog niet?
+2. Heeft het zin om de probability map te updaten?
+3. Als je weet welke schipgroottes er nog zijn, heeft dat invloed?
+
+
+
+
 
 3. DOM
 - Bedenk het design voor Form, Preparation, het echte spel en het einde, alleen HTML en CSS

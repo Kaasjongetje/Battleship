@@ -4,22 +4,56 @@ import Ship from "./ship.js";
 export default class AI {
     constructor (board) {
         this.board = board;
+        this.foundShipLocations = [];
+        this.targetLocation = null;
+        this.targetDirection = null;
+        this.latestTargetLocation = null;
+        this.updateProbabilityMap();
     }
 
-    getBestMove() {
-        
+    play() {
+        if (this.foundShipParts.length <= 0) {
+            const locationToAttack = this.getRandomItem(this.probabilityMap);
+            this.board.attack(locationToAttack);
+            if (this.board.getTile(locationToAttack).ship !== null) {
+                this.foundShipParts.push(locationToAttack);
+            }
+        } else {
+            this.getNextTarget();
+        }
+    }
+
+    getNextTarget() {
+        if (this.targetLocation === null) {
+            this.targetLocation = this.foundShipLocations[0];
+            this.chooseDirection();
+        }
+
+        let nextTargetLocation = this.goForwards();
+
+        while (!this.board.canAttack(nextTargetLocation)) {
+            this.chooseDirection();
+            nextTargetLocation = this.goForwards();
+        }
+
+        this.board.attack(nextTargetLocation);
+        this.latestTargetLocation = nextTargetLocation;
+
+
+
+
+
     }
 
     getHighestProbabilityLocations() {
-        const probabilityMap = this.generateProbabilityMap();
-        printArray(probabilityMap);
+        this.updateProbabilityMap();
         let highestChance = 0;
         let highestProbabilityLocations = [];
         for (let i = 0; i < Board.size; i++) {
             for (let j = 0; j < Board.size; j++) {
-                if (probabilityMap[i][j] < highestChance) continue;
+                if (this.probabilityMap[i][j] < highestChance) continue;
 
-                if (probabilityMap[i][j] > highestChance) {
+                if (this.probabilityMap[i][j] > highestChance) {
                     highestChance = probabilityMap[i][j];
                     highestProbabilityLocations = [];
                 }
@@ -48,7 +82,7 @@ export default class AI {
         return ships;
     }
 
-    generateProbabilityMap() {
+    updateProbabilityMap() {
         const probabilityMap = Board.createMap(() => 0);
         for (const ship of this.getPotentialShips()) {
             const minRow = ship.direction === 'horizontal' ? 0 : ship.size - 1;
@@ -64,10 +98,15 @@ export default class AI {
                 }
             }
         }
-        return probabilityMap;
+        this.probabilityMap = probabilityMap;
     }
 
 }
+
+function getRandomItem(array) {
+    const randomIndex = Math.floor(Math.random() * array.length);
+    return array[randomIndex];
+  }
 
 function printArray (array) {
     for (let i = 0; i < array.length; i++) {

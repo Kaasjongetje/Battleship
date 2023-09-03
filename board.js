@@ -34,7 +34,7 @@ export default class Board {
     }
 
     canAttack (location) {
-        return !this.getTile(location).attacked;
+        return Board.isValidLocation(location) && !this.getTile(location).attacked;
     }
 
     remove (ship) {
