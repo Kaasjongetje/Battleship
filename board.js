@@ -19,6 +19,10 @@ export default class Board {
         this.ships = Ship.createShips();
     }
 
+    forEachTile (callback) {
+        
+    }
+
     getShip (location) {
         return this.getTile(location).ship;
     }

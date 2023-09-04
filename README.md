@@ -1,12 +1,23 @@
 # TODO
 
-- chooseDirection
-- goForward
+Test maken voor:
+- forEachTile(callback, from, to) >>> forEachTile((tile) => tile.attacked = true, [0, 0], [9, 9])
+- canBeShip
+- getLocationForwards
+
+Beginnen met:
+- DOM
+
+- changeDirection // kiest een (optimale) richting
+- getLocationForwards
+- canAttack(location) // kijkt of je verder kunt in die richting
+- canBeShip(location) // kijkt of er een kans aanwezig is
+- attack(location)
 - isDeadEnd
 - isShipPart
 - isTargetShip
 
-- forEachTile(callback, from, to) >>> forEachTile((tile) => tile.attacked = true, [0, 0], [9, 9])
+
 
 
 2. AI

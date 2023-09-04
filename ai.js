@@ -5,7 +5,7 @@ export default class AI {
     constructor (board) {
         this.board = board;
         this.foundShipLocations = [];
-        this.targetLocation = null;
+        this.originalLocation = null;
         this.targetDirection = null;
         this.latestTargetLocation = null;
         this.updateProbabilityMap();
@@ -24,8 +24,8 @@ export default class AI {
     }
 
     getNextTarget() {
-        if (this.targetLocation === null) {
-            this.targetLocation = this.foundShipLocations[0];
+        if (this.originalLocationLocation === null) {
+            this.originalLocationLocation = this.foundShipLocations[0];
             this.chooseDirection();
         }
 
