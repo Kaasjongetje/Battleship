@@ -1,12 +1,8 @@
 # TODO
 
 Test maken voor:
-- forEachTile(callback, from, to) >>> forEachTile((tile) => tile.attacked = true, [0, 0], [9, 9])
 - canBeShip
 - getLocationForwards
-
-Beginnen met:
-- DOM
 
 - changeDirection // kiest een (optimale) richting
 - getLocationForwards
