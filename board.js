@@ -18,9 +18,13 @@ export default class Board {
         this.tiles = Board.createMap(() => new Tile());
         this.ships = Ship.createShips();
     }
-
-    forEachTile (callback) {
-        
+    
+    static forEachTile (map, callback, from = [0, 0], to = [9, 9]) {
+        for (let row = from[0]; row <= to[0]; row++) {
+            for (let cell = from[1]; cell <= to[1]; cell++) {
+                callback(map[row][cell], row, cell);
+            }
+        }
     }
 
     getShip (location) {
