@@ -49,18 +49,29 @@ export default class AI {
         this.updateProbabilityMap();
         let highestChance = 0;
         let highestProbabilityLocations = [];
-        for (let i = 0; i < Board.size; i++) {
-            for (let j = 0; j < Board.size; j++) {
-                if (this.probabilityMap[i][j] < highestChance) continue;
 
-                if (this.probabilityMap[i][j] > highestChance) {
-                    highestChance = probabilityMap[i][j];
-                    highestProbabilityLocations = [];
-                }
+        Board.forEachTile(this.probabilityMap, (chance, row, cell) => {
+            if (chance < highestChance) return;
 
-                highestProbabilityLocations.push([i, j]);
+            if (chance > highestChance) {
+                highestChance = chance;
+                highestProbabilityLocations = [];
             }
-        }
+
+            highestProbabilityLocations.push([row, cell]);
+        });
+        // for (let i = 0; i < Board.size; i++) {
+        //     for (let j = 0; j < Board.size; j++) {
+        //         if (this.probabilityMap[i][j] < highestChance) continue;
+
+        //         if (this.probabilityMap[i][j] > highestChance) {
+        //             highestChance = probabilityMap[i][j];
+        //             highestProbabilityLocations = [];
+        //         }
+
+        //         highestProbabilityLocations.push([i, j]);
+        //     }
+        // }
         return highestProbabilityLocations;
     }
 
@@ -108,7 +119,7 @@ function getRandomItem(array) {
     return array[randomIndex];
   }
 
-function printArray (array) {
+export function printArray (array) {
     for (let i = 0; i < array.length; i++) {
         let string = '';
         for (let j = 0; j < array[i].length; j++) {
