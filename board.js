@@ -88,10 +88,10 @@ export default class Board {
 
     static createMap (value) {
         const map = [];
-        for (let i = 0; i < Board.size; i++) {
-            map[i] = [];
-            for (let j = 0; j < Board.size; j++) {
-                map[i][j] = value();
+        for (let row = 0; row < Board.size; row++) {
+            map[row] = [];
+            for (let cell = 0; cell < Board.size; cell++) {
+                map[row][cell] = value(row, cell);
             }
         }
         return map;
