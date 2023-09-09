@@ -62,6 +62,7 @@ img {
     position: absolute;
     inset: 0;
     z-index: 1;
+    right: 100%;
     
     background-color: green;
     opacity: .6;

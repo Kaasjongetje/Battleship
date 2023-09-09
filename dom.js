@@ -4,6 +4,7 @@ import Ship from "./ship.js";
 import Board from "./board.js";
 
 let tileElements;
+let currentDraggedShip;
 
 export function loadPage (element) {
     removeChildNodes(document.body);
@@ -65,10 +66,30 @@ export function getPreparation() {
     });
     preparationDiv.appendChild(boardDiv);
 
+    const canPlaceIndicator = document.createElement('div');
+    canPlaceIndicator.classList.add('can-place-indicator');
+    tileElements[9][0].appendChild(canPlaceIndicator);
+
     const shipElements = [];
     for (const shipName in Ship.SHIPS) {
         const size = Ship.SHIPS[shipName];
-        const shipElement = createShipElement(size, true);
+        const shipElement = createShipElement(size);
+
+        interact(shipElement).draggable({
+            inertia: true,
+            modifiers: [
+                interact.modifiers.restrictRect({
+                  restriction: 'parent',
+                  endOnly: true
+                })
+              ],
+            listeners: {
+                start: () => canPlaceIndicator.style.right = shipElement.style.right,
+                move: onShipDrag,
+                end: () => canPlaceIndicator.style.right = '100%',
+            }
+        });
+
         shipElements.push(shipElement);
     }
     tileElements[0][0].appendChild(shipElements[0]);
@@ -83,7 +104,6 @@ export function getPreparation() {
 function createShipElement (size, draggable) {
     const shipDiv = document.createElement('div');
     shipDiv.classList.add('ship');
-    if (draggable) shipDiv.classList.add('draggable');
     shipDiv.style.right = `calc(-${size - 1}00% - ${size - 1}px)`;
     return shipDiv;
 }
@@ -92,4 +112,16 @@ function removeChildNodes (element) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
+}
+
+function onShipDrag (e) {
+    const target = e.target
+    
+    const x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx;
+    const y = (parseFloat(target.getAttribute('data-y')) || 0) + e.dy;
+  
+    target.style.transform = `translate(${x}px, ${y}px)`;
+
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
 }
