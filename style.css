@@ -20,13 +20,13 @@ form {
     border: 2px solid red;
 }
 
-
-
 .preparation {
     padding: 50px;
     display: flex;
     gap: 50px;
+    overflow: hidden;
 }
+
 
 .board {
     display: grid;
@@ -39,45 +39,58 @@ form {
     height: 500px;
 }
 
+@media (max-width: 600px) {
+    .board {
+        width: 400px;
+        height: 400px;
+    }
+}
+
+
 .tile {
     background-color: royalblue;
+    position: relative;
 }
 
-.tile.placeable {
-    opacity: .7;
-}
-
-.ship-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    width: 500px;
-    height: 300px;
-    padding: 10px;
-    border: 2px solid black;
-}
-
-.ship {
-    width: 50px;
-    background-color: gray;
-    border-radius: 100vmax;
-    cursor: pointer;
-}
-
-.destroyer {
+img {
+    width: 100px;
     height: 100px;
 }
 
-.submarine,
-.cruiser {
-    height: 150px;
+
+.can-place-indicator {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    
+    background-color: green;
+    opacity: .6;
 }
 
-.battleship {
-    height: 200px;
+.ship {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    background-color: gray;
+    border-radius: 100vmax;
 }
 
-.carrier {
-    height: 250px;
+.rotator {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: transform 200ms ease;
+
+    background-image: url(rotator.svg);
+}
+
+.rotator:hover {
+    transform: translateX(-50%) rotateZ(90deg);
 }
 
 

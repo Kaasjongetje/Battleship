@@ -1,6 +1,31 @@
 # TODO
 
-Test maken voor:
+1 Maak schip met daarin rotator en canplaceindicator, responsive hoeft niet mooi
+ROTATOR onder het schip
+
+2 Functie die preparation genereert, schepen en canplaceindicator op het bord plaatst
+
+3 Maak de schepen dragbaar
+
+4 Zodra je een schip dragt dan moet de canplaceindicator de grootte van dat schip aannemen
+
+5 Zorg ervoor dat de canplaceindicator in de tile wordt geplaatst waarover gedragt wordt
+
+6 Zorg ervoor dat de kleur van de cpi wordt aangepast afhankelijk van of het kan of niet
+
+
+
+
+
+
+
+
+
+
+
+
+
+Maken:
 - canBeShip
 - getLocationForwards
 
