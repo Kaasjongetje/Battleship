@@ -1,7 +1,7 @@
-import { validateForm } from "./script.js";
-import { validateInput } from "./script.js";
+import { validateInput, validateForm, onShipDragEnter } from "./script.js";
 import Ship from "./ship.js";
 import Board from "./board.js";
+import { player } from "./index.js";
 
 let tileElements;
 let currentDraggedShip;
@@ -56,37 +56,42 @@ export function getPreparation() {
     const boardDiv = document.createElement('div');
     boardDiv.classList.add('board');
 
+    const canPlaceIndicator = document.createElement('div');
+    canPlaceIndicator.classList.add('can-place-indicator');
+
     tileElements = Board.createMap((row, cell) => {
         const tileDiv = document.createElement('div');
         tileDiv.classList.add('tile');
+
+        interact(tileDiv).dropzone({
+            // accept: '.draggable-ship',
+            ondragenter: (e) => onShipDragEnter(e.target, canPlaceIndicator, currentDraggedShip, row, cell),
+
+        });
 
         boardDiv.appendChild(tileDiv);
 
         return tileDiv;
     });
+    tileElements[0][0].appendChild(canPlaceIndicator);
     preparationDiv.appendChild(boardDiv);
 
-    const canPlaceIndicator = document.createElement('div');
-    canPlaceIndicator.classList.add('can-place-indicator');
-    tileElements[9][0].appendChild(canPlaceIndicator);
-
     const shipElements = [];
-    for (const shipName in Ship.SHIPS) {
-        const size = Ship.SHIPS[shipName];
-        const shipElement = createShipElement(size);
+    for (const ship of player.board.ships) {
+        const shipElement = createShipElement(ship.size);
 
         interact(shipElement).draggable({
             inertia: true,
-            modifiers: [
-                interact.modifiers.restrictRect({
-                  restriction: 'parent',
-                  endOnly: true
-                })
-              ],
             listeners: {
-                start: () => canPlaceIndicator.style.right = shipElement.style.right,
+                start: () => {
+                    currentDraggedShip = ship;
+                    canPlaceIndicator.style.right = shipElement.style.right
+                },
                 move: onShipDrag,
-                end: () => canPlaceIndicator.style.right = '100%',
+                end: () => {
+                    currentDraggedShip = null;
+                    canPlaceIndicator.style.right = '100%';
+                },
             }
         });
 
@@ -101,7 +106,7 @@ export function getPreparation() {
     return preparationDiv;
 }
 
-function createShipElement (size, draggable) {
+function createShipElement (size) {
     const shipDiv = document.createElement('div');
     shipDiv.classList.add('ship');
     shipDiv.style.right = `calc(-${size - 1}00% - ${size - 1}px)`;

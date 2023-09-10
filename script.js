@@ -1,4 +1,4 @@
-import { initializePlayer } from "./index.js";
+import { initializePlayer, player } from "./index.js";
 
 export function validateInput() {
     const input = document.getElementById('name');
@@ -29,4 +29,14 @@ export function validateForm (e) {
 
     const name = document.getElementById('name').value;
     initializePlayer(name);
+}
+
+export function onShipDragEnter (tileElement, canPlaceIndicator, ship, row, cell) {
+    tileElement.appendChild(canPlaceIndicator);
+
+    if (player.board.canPlace(ship, [row, cell])) {
+        canPlaceIndicator.style.backgroundColor = 'green';
+    } else {
+        canPlaceIndicator.style.backgroundColor = 'red';
+    }
 }

@@ -5,7 +5,7 @@ import AI, { printArray } from "./ai.js";
 import { loadPage, getForm, getPreparation } from "./dom.js";
 import { validateInput } from "./script.js";
 
-let player;
+export let player;
 const computer = new Player('The Computer');
 
 player = new Player('Kaasjongetje'); // loadPage(getForm());
