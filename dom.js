@@ -1,7 +1,14 @@
-import { validateInput, validateForm, onShipDragEnter } from "./script.js";
-import Ship from "./ship.js";
+import {
+    validateInput, 
+    validateForm, 
+    onShipDragEnter, 
+    player,
+    onShipDragStart,
+    onShipDragEnd,
+    onShipDrop,
+    onShipDragLeave
+} from "./index.js";
 import Board from "./board.js";
-import { player } from "./index.js";
 
 let tileElements;
 let currentDraggedShip;
@@ -64,9 +71,11 @@ export function getPreparation() {
         tileDiv.classList.add('tile');
 
         interact(tileDiv).dropzone({
-            // accept: '.draggable-ship',
-            ondragenter: (e) => onShipDragEnter(e.target, canPlaceIndicator, currentDraggedShip, row, cell),
-
+            accept: '.ship',
+            ondragenter: (e) => onShipDragEnter(e.target, canPlaceIndicator, row, cell),
+            ondrop: (e) => onShipDrop(row, cell, e.target, e.relatedTarget),
+            ondragleave: () => onShipDragLeave(canPlaceIndicator),
+            
         });
 
         boardDiv.appendChild(tileDiv);
@@ -82,16 +91,16 @@ export function getPreparation() {
 
         interact(shipElement).draggable({
             inertia: true,
+            modifiers: [
+                interact.modifiers.restrictRect({
+                  restriction: 'parent',
+                  endOnly: true
+                })
+              ],
             listeners: {
-                start: () => {
-                    currentDraggedShip = ship;
-                    canPlaceIndicator.style.right = shipElement.style.right
-                },
+                start: () => onShipDragStart(ship, shipElement, canPlaceIndicator),
                 move: onShipDrag,
-                end: () => {
-                    currentDraggedShip = null;
-                    canPlaceIndicator.style.right = '100%';
-                },
+                end: () => onShipDragEnd(canPlaceIndicator),
             }
         });
 
