@@ -2,12 +2,13 @@ import Ship from "./ship.js";
 import Board from "./board.js";
 import Player from "./player.js";
 import AI, { printArray } from "./ai.js";
-import { loadPage, getForm, getPreparation } from "./dom.js";
+import { loadPage, } from "./dom.js";
 
 export let player;
 const computer = new Player('The Computer');
 
 let currentDraggedShip = null;
+let draggedShipTile = null;
 
 player = new Player('Kaasjongetje'); // loadPage(getForm());
 loadPage(getPreparation());
@@ -56,44 +57,6 @@ export function validateForm (e) {
 
     const name = document.getElementById('name').value;
     initializePlayer(name);
-}
-
-export function onShipDragStart (ship, shipElement, canPlaceIndicator) {
-    // player.board.remove(ship);
-    currentDraggedShip = ship;
-    canPlaceIndicator.style.visibility = 'visible';
-    canPlaceIndicator.style.right = shipElement.style.right;
-}
-
-export function onShipDragEnd (canPlaceIndicator) {
-    currentDraggedShip = null;
-    canPlaceIndicator.style.visibility = 'hidden';
-}
-
-export function onShipDragEnter (tileElement, canPlaceIndicator, row, cell) {
-    canPlaceIndicator.style.visibility = 'visible';
-    tileElement.appendChild(canPlaceIndicator);
-
-    if (player.board.canPlace(currentDraggedShip, [row, cell])) {
-        canPlaceIndicator.style.backgroundColor = 'green';
-    } else {
-        canPlaceIndicator.style.backgroundColor = 'red';
-    }
-}
-
-export function onShipDragLeave (canPlaceIndicator) {
-    console.log('leave');
-    canPlaceIndicator.style.visibility = 'hidden';
-}
-
-export function onShipDrop (row, cell, tileElement, shipElement) {
-    if (!player.board.canPlace(currentDraggedShip, [row, cell])) {
-        console.log('niet mogelijk');
-        return;
-    };
-
-    player.board.place(currentDraggedShip, [row, cell]);
-    tileElement.appendChild(shipElement);
 }
 
 
