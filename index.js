@@ -2,30 +2,18 @@ import Ship from "./ship.js";
 import Board from "./board.js";
 import Player from "./player.js";
 import AI, { printArray } from "./ai.js";
-import { loadPage, } from "./dom.js";
+import { getForm, loadPage, getPreparation } from "./dom.js";
 
 export let player;
 const computer = new Player('The Computer');
 
-let currentDraggedShip = null;
-let draggedShipTile = null;
+player = new Player('Kaasjongetje');// loadPage(getForm());
 
-player = new Player('Kaasjongetje'); // loadPage(getForm());
 loadPage(getPreparation());
-player.board.place(player.board.ships[0], [0, 0]);
-player.board.place(player.board.ships[1], [1, 0]);
-player.board.place(player.board.ships[2], [2, 0]);
-player.board.place(player.board.ships[3], [3, 0]);
-player.board.place(player.board.ships[4], [4, 0]);
 
 export function initializePlayer (name) {
     player = new Player(name);
     loadPage(getPreparation());
-    player.board.place(player.board.ships[0], [0, 0]);
-    player.board.place(player.board.ships[1], [1, 0]);
-    player.board.place(player.board.ships[2], [2, 0]);
-    player.board.place(player.board.ships[3], [3, 0]);
-    player.board.place(player.board.ships[4], [4, 0]);
 }
 
 export function validateInput() {
@@ -57,6 +45,31 @@ export function validateForm (e) {
 
     const name = document.getElementById('name').value;
     initializePlayer(name);
+}
+
+export function onTileEnter() {
+
+}
+
+export function onTileLeave() {
+    
+}
+
+export function onShipClick() {
+    
+}
+
+export function setSize(element, size, direction) {
+    element.style.right = direction === 'horizontal' ? `calc(-${size - 1}00% - ${size - 1}px)` : '0';
+    element.style.bottom = direction === 'vertical' ? `calc(-${size - 1}00% - ${size - 1}px)` : '0';  
+}
+
+export function initializeShips(map, ships, initializeShip) {
+    initializeShip(map[0][0], ships[0]); 
+    initializeShip(map[1][0], ships[1]); 
+    initializeShip(map[2][0], ships[2]); 
+    initializeShip(map[3][0], ships[3]); 
+    initializeShip(map[4][0], ships[4]); 
 }
 
 
