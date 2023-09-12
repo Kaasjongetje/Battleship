@@ -1,6 +1,12 @@
 import {
     validateInput, 
-    validateForm, 
+    validateForm,
+    onTileEnter,
+    onTileLeave,
+    player,
+    onShipClick, 
+    setSize,
+    initializeShips,
 } from "./index.js";
 import Board from "./board.js";
 
@@ -9,7 +15,62 @@ export function loadPage (element) {
     document.body.appendChild(element);
 }
 
+export function getPreparation() {
+    const preparationElement = document.createElement('div');
+    preparationElement.classList.add('preparation');
 
+    const boardElement = document.createElement('div');
+    boardElement.classList.add('board');
+
+    const canPlaceIndicator = document.createElement('div');
+    canPlaceIndicator.classList.add('can-place-indicator');
+
+    const tileElements = Board.createMap(() => {
+        const tileElement = document.createElement('div');
+        tileElement.classList.add('tile');
+
+        tileElement.addEventListener('mouseenter', () => onTileEnter());
+        tileElement.addEventListener('mouseleave', () => onTileLeave());
+
+        boardElement.appendChild(tileElement);
+
+        return tileElement;
+    });
+
+    const shipContainers = [];
+    for (const ship of player.board.ships) {
+        const shipContainer = document.createElement('div');
+        shipContainer.classList.add('ship-container');
+
+        const shipWrapper = document.createElement('div');
+        shipWrapper.classList.add('ship-wrapper');
+
+        setSize(shipWrapper, ship.size, ship.direction);
+
+        const shipElement = document.createElement('div');
+        shipElement.classList.add('ship');
+
+        shipElement.addEventListener('click', () => onShipClick());
+
+        shipWrapper.appendChild(shipElement);
+
+        shipContainer.appendChild(shipWrapper);
+        
+        shipContainers.push(shipContainer);
+    }
+
+    initializeShips(tileElements, shipContainers, (tileElement, shipContainer) => tileElement.appendChild(shipContainer));
+    
+    preparationElement.appendChild(boardElement);
+
+    return preparationElement;
+}
+
+function createBoardElement() {
+    
+
+    return board;
+}
 
 export function getForm() {
     const form = document.createElement("form");
