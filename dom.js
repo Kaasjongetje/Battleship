@@ -52,7 +52,7 @@ export function getPreparation() {
         const shipElement = document.createElement('div');
         shipElement.classList.add('ship');
 
-        shipElement.addEventListener('click', () => selectShip(ship, shipElement));
+        shipElement.addEventListener('click', () => selectShip(ship, shipElement, canPlaceIndicator));
 
         shipWrapper.appendChild(shipElement);
 

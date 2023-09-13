@@ -59,14 +59,16 @@ export function onTileLeave() {
     
 }
 
-export function selectShip(ship, shipElement) {
-
-    console.log(selectedShip)
+export function selectShip(ship, shipElement, canPlaceIndicator) {
+    const selectedShipElement = document.querySelector('.ship.selected');
+    if (selectedShipElement !== null) selectedShipElement.classList.remove('selected');
 
     selectedShip = ship;
     shipElement.classList.add('selected');
 
-    console.log(selectedShip, shipElement)
+    setSize(canPlaceIndicator, ship.size, ship.direction);
+
+    console.log(canPlaceIndicator);
 }
 
 export function onRotatorEnter() {
