@@ -54,7 +54,11 @@ export function getPreparation() {
 
         shipWrapper.appendChild(shipElement);
 
+        const rotatorElement = document.createElement('div');
+        rotatorElement.classList.add('rotator');
+
         shipContainer.appendChild(shipWrapper);
+        shipContainer.append(rotatorElement);
         
         shipContainers.push(shipContainer);
     }
