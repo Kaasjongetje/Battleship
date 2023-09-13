@@ -51,47 +51,7 @@ export function validateForm (e) {
     initializePlayer(name);
 }
 
-export function onTileEnter() {
 
-}
-
-export function onTileLeave() {
-    
-}
-
-export function selectShip(ship, shipElement, canPlaceIndicator) {
-    const selectedShipElement = document.querySelector('.ship.selected');
-    if (selectedShipElement !== null) selectedShipElement.classList.remove('selected');
-
-    selectedShip = ship;
-    shipElement.classList.add('selected');
-
-    setSize(canPlaceIndicator, ship.size, ship.direction);
-
-    console.log(canPlaceIndicator);
-}
-
-export function onRotatorEnter() {
-    console.log('test');
-}
-
-export function onRotatorLeave() {
-    
-}
-
-
-export function setSize(element, size, direction) {
-    element.style.right = direction === 'horizontal' ? `calc(-${size - 1}00% - ${size - 1}px)` : '0';
-    element.style.bottom = direction === 'vertical' ? `calc(-${size - 1}00% - ${size - 1}px)` : '0';  
-}
-
-export function initializeShips(ships, initializeShip) {
-    initializeShip(0, 0, ships[0]); 
-    initializeShip(1, 0, ships[1]); 
-    initializeShip(2, 0, ships[2]); 
-    initializeShip(3, 0, ships[3]); 
-    initializeShip(4, 0, ships[4]); 
-}
 
 
 
