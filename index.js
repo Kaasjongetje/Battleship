@@ -7,6 +7,8 @@ import { getForm, loadPage, getPreparation } from "./dom.js";
 export let player;
 const computer = new Player('The Computer');
 
+let selectedShip = null;
+
 player = new Player('Kaasjongetje');// loadPage(getForm());
 
 loadPage(getPreparation());
@@ -14,6 +16,7 @@ loadPage(getPreparation());
 export function initializePlayer (name) {
     player = new Player(name);
     loadPage(getPreparation());
+    
 }
 
 export function validateInput() {
@@ -55,21 +58,36 @@ export function onTileLeave() {
     
 }
 
-export function onShipClick() {
+export function selectShip(ship, shipElement) {
+
+    console.log(selectedShip)
+
+    selectedShip = ship;
+    shipElement.classList.add('selected');
+
+    console.log(selectedShip, shipElement)
+}
+
+export function onRotatorEnter() {
+    console.log('test');
+}
+
+export function onRotatorLeave() {
     
 }
+
 
 export function setSize(element, size, direction) {
     element.style.right = direction === 'horizontal' ? `calc(-${size - 1}00% - ${size - 1}px)` : '0';
     element.style.bottom = direction === 'vertical' ? `calc(-${size - 1}00% - ${size - 1}px)` : '0';  
 }
 
-export function initializeShips(map, ships, initializeShip) {
-    initializeShip(map[0][0], ships[0]); 
-    initializeShip(map[1][0], ships[1]); 
-    initializeShip(map[2][0], ships[2]); 
-    initializeShip(map[3][0], ships[3]); 
-    initializeShip(map[4][0], ships[4]); 
+export function initializeShips(ships, initializeShip) {
+    initializeShip(0, 0, ships[0]); 
+    initializeShip(1, 0, ships[1]); 
+    initializeShip(2, 0, ships[2]); 
+    initializeShip(3, 0, ships[3]); 
+    initializeShip(4, 0, ships[4]); 
 }
 
 

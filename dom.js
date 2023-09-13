@@ -4,9 +4,11 @@ import {
     onTileEnter,
     onTileLeave,
     player,
-    onShipClick, 
+    selectShip, 
     setSize,
     initializeShips,
+    onRotatorEnter,
+    onRotatorLeave
 } from "./index.js";
 import Board from "./board.js";
 
@@ -50,12 +52,15 @@ export function getPreparation() {
         const shipElement = document.createElement('div');
         shipElement.classList.add('ship');
 
-        shipElement.addEventListener('click', () => onShipClick());
+        shipElement.addEventListener('click', () => selectShip(ship, shipElement));
 
         shipWrapper.appendChild(shipElement);
 
         const rotatorElement = document.createElement('div');
         rotatorElement.classList.add('rotator');
+
+        rotatorElement.addEventListener('mouseenter', () => onRotatorEnter());
+        rotatorElement.addEventListener('mouseleave', () => onRotatorLeave());
 
         shipContainer.appendChild(shipWrapper);
         shipContainer.append(rotatorElement);
@@ -63,7 +68,7 @@ export function getPreparation() {
         shipContainers.push(shipContainer);
     }
 
-    initializeShips(tileElements, shipContainers, (tileElement, shipContainer) => tileElement.appendChild(shipContainer));
+    initializeShips(shipContainers, (row, cell, shipContainer) => tileElements[row][cell].appendChild(shipContainer));
     
     preparationElement.appendChild(boardElement);
 
