@@ -65,6 +65,10 @@ form {
     border-radius: 100vmax;
 }
 
+.ship.selected {
+    box-shadow: 0 0 20px rgba(255, 255, 255, .7) ;
+}
+
 .rotator {
     position: absolute;
     width: 30px;
@@ -74,6 +78,11 @@ form {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
+    visibility: hidden;
+}
+
+.ship-container:has(.ship.selected) .rotator {
+    visibility: visible;
 }
 
 .can-place-indicator {
