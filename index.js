@@ -11,12 +11,13 @@ let selectedShip = null;
 
 player = new Player('Kaasjongetje');// loadPage(getForm());
 
-loadPage(getPreparation());
+loadPage(getPreparation()); // Deze twee regels moeten weg uiteindelijk
+initializeShips(player.board.ships, (row, cell, ship) => player.board.place(ship, [row, cell]));
 
 export function initializePlayer (name) {
     player = new Player(name);
     loadPage(getPreparation());
-    
+    initializeShips(player.board.ships, (row, cell, ship) => player.board.place(ship, [row, cell]));
 }
 
 export function validateInput() {
