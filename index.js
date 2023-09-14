@@ -7,7 +7,7 @@ import { getForm, loadPage, getPreparation } from "./dom.js";
 export let player;
 const computer = new Player('The Computer');
 
-let draggedShip = null;
+export let draggedShip = null;
 let previousLocation = null;
 
 player = new Player('Kaasjongetje');// loadPage(getForm());
@@ -77,8 +77,9 @@ export function onShipDragStart (ship, canPlaceIndicator, boardElement) {
     player.board.remove(ship);
 }
 
-export function onShipDragEnter (canPlaceIndicator, row, cell) {
-    if (player.board.canPlace(draggedShip, [row, cell])) {
+export function displayIndicator (ship, row, cell) {
+    const canPlaceIndicator = document.querySelector('.can-place-indicator');
+    if (player.board.canPlace(ship, [row, cell])) {
         canPlaceIndicator.classList.toggle('valid', true);
         canPlaceIndicator.classList.toggle('invalid', false);
     } else {
@@ -86,7 +87,7 @@ export function onShipDragEnter (canPlaceIndicator, row, cell) {
         canPlaceIndicator.classList.toggle('valid', false);
     }
  
-    setSize(canPlaceIndicator, draggedShip.size, draggedShip.direction, 10);
+    setSize(canPlaceIndicator, ship.size, ship.direction, 10);
     setPosition(canPlaceIndicator, row, cell);
 }
 

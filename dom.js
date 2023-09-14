@@ -8,9 +8,9 @@ import {
     onShipDrag,
     onShipDrop,
     onShipDragStart,
-    onShipDragEnter,
+    displayIndicator,
     onShipDragLeave,
-
+    draggedShip
 } from "./index.js";
 import Board from "./board.js";
 
@@ -51,6 +51,7 @@ export function getPreparation() {
         shipWrapper.appendChild(shipElement);
 
         const rotator = createElement('rotator');
+        rotator.addEventListener('mouseenter', () => console.log('hover'));
 
         shipContainer.appendChild(rotator);
 
@@ -74,7 +75,7 @@ export function getPreparation() {
         const tileElement = createElement(cell % 2 === 0 ? even : odd);
 
         interact(tileElement).dropzone({
-            ondragenter: () => onShipDragEnter(canPlaceIndicator, row, cell),
+            ondragenter: () => displayIndicator(draggedShip, row, cell),
             ondrop: (e) => onShipDrop(e.relatedTarget, row, cell, canPlaceIndicator),
             ondragleave: () => onShipDragLeave(canPlaceIndicator),
         });
