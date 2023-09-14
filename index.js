@@ -77,15 +77,11 @@ export function onShipDragStart (ship, canPlaceIndicator) {
 
 export function onShipDragEnter (canPlaceIndicator, row, cell) {
     if (player.board.canPlace(draggedShip, [row, cell])) {
-        if (canPlaceIndicator.classList.contains('invalid'))
-            canPlaceIndicator.classList.remove('invalid');
-        if (!canPlaceIndicator.classList.contains('valid'))
-            canPlaceIndicator.classList.add('valid');
+        canPlaceIndicator.classList.toggle('valid', true);
+        canPlaceIndicator.classList.toggle('invalid', false);
     } else {
-        if (canPlaceIndicator.classList.contains('valid'))
-            canPlaceIndicator.classList.remove('valid');
-        if (!canPlaceIndicator.classList.contains('invalid'))
-            canPlaceIndicator.classList.add('invalid');
+        canPlaceIndicator.classList.toggle('invalid', true);
+        canPlaceIndicator.classList.toggle('valid', false);
     }
 
     setPosition(canPlaceIndicator, row, cell);
