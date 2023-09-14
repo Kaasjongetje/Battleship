@@ -86,4 +86,15 @@ form {
     background-color: red;
 }
 
+.rotator {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-image: url(rotator.svg);
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
 

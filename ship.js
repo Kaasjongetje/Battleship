@@ -52,7 +52,7 @@ export default class Ship {
 
     static DIRECTIONS = {
         'horizontal': [0, 1],
-        'vertical': [-1, 0]
+        'vertical': [1, 0]
     }
 
     static SHIPS = {
