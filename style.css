@@ -35,6 +35,8 @@ form {
 }
 
 .board {
+    position: relative;
+
     width: 500px;
     height: 500px;
     background-color: white; 
@@ -44,6 +46,32 @@ form {
     grid-template-columns: repeat(10, 1fr);
 }
 
+.light {
+    background-color: #6BAFB3;
+}
+
+.dark {
+    background-color: cadetblue;
+}
+
+.ship-container {
+    position: absolute;
+    width: 10%;
+    height: 10%;
+    touch-action: none;
+}
+
+.ship-wrapper {
+    padding: 1px;
+}
+
+.ship {
+    background-color: #AAA;
+    border-radius: 100vmax;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
 
 
 

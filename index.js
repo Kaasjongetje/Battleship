@@ -11,7 +11,7 @@ let selectedShip = null;
 
 player = new Player('Kaasjongetje');// loadPage(getForm());
 
-loadPage(getPreparation()); // Deze twee regels moeten weg uiteindelijk
+loadPage(getPreparation()); // Deze regels moeten weg uiteindelijk
 initializeShips(player.board.ships, (row, cell, ship) => player.board.place(ship, [row, cell]));
 
 export function initializePlayer (name) {
@@ -51,6 +51,39 @@ export function validateForm (e) {
     initializePlayer(name);
 }
 
+export function setSize (element, size, direction) {
+    element.style.width = direction === 'horizontal' ? `${size}00%` : '100%';
+    element.style.height = direction === 'vertical' ? `${size}00%` : '100%'
+}
+
+export function initializeShips (ships, initializeShip) {
+    initializeShip(0, 0, ships[0]);
+    initializeShip(1, 0, ships[1]);
+    initializeShip(2, 0, ships[2]);
+    initializeShip(3, 0, ships[3]);
+    initializeShip(4, 0, ships[4]);
+}
+
+export function setPosition (element, row, cell) {
+    element.style.top = `${row}0%`;
+    element.style.left = `${cell}0%`;
+}
+
+export function onShipDrop (row, cell) {
+    console.log(row, cell)
+}
+
+export function onShipDrag (e) {
+  const target = e.target
+
+  const x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx
+  const y = (parseFloat(target.getAttribute('data-y')) || 0) + e.dy
+
+  target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+
+  target.setAttribute('data-x', x)
+  target.setAttribute('data-y', y)
+}
 
 
 
