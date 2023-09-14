@@ -50,10 +50,13 @@ export function getPreparation() {
 
         shipWrapper.appendChild(shipElement);
 
+        const rotator = createElement('rotator');
+
+        shipContainer.appendChild(rotator);
+
         shipContainer.appendChild(shipWrapper);
 
         boardElement.appendChild(shipContainer);
-
         shipContainers.push(shipContainer);
     }
 
