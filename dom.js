@@ -8,7 +8,8 @@ import {
     onShipDrag,
     onShipDrop,
     onShipDragStart,
-    onShipDragEnter
+    onShipDragEnter,
+    onShipDragLeave,
 
 } from "./index.js";
 import Board from "./board.js";
@@ -37,7 +38,7 @@ export function getPreparation() {
                 })
               ],
             listeners: {
-                start: () => onShipDragStart(ship, canPlaceIndicator),
+                start: () => onShipDragStart(ship, canPlaceIndicator, boardElement),
                 move: onShipDrag,
             }
         });
@@ -71,7 +72,8 @@ export function getPreparation() {
 
         interact(tileElement).dropzone({
             ondragenter: () => onShipDragEnter(canPlaceIndicator, row, cell),
-            ondrop: (e) => onShipDrop(e.relatedTarget, row, cell),
+            ondrop: (e) => onShipDrop(e.relatedTarget, row, cell, canPlaceIndicator),
+            ondragleave: () => onShipDragLeave(canPlaceIndicator),
         });
 
         boardElement.appendChild(tileElement);

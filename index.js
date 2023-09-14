@@ -8,6 +8,7 @@ export let player;
 const computer = new Player('The Computer');
 
 let draggedShip = null;
+let previousLocation = null;
 
 player = new Player('Kaasjongetje');// loadPage(getForm());
 
@@ -69,10 +70,11 @@ export function setPosition (element, row, cell) {
     element.style.left = `${cell}0%`;
 }
 
-export function onShipDragStart (ship, canPlaceIndicator) {
+export function onShipDragStart (ship, canPlaceIndicator, boardElement) {
     draggedShip = ship;
-    setSize(canPlaceIndicator, ship.size, ship.direction, 10);
-    console.log(draggedShip);
+    previousLocation = ship.location;
+
+    player.board.remove(ship);
 }
 
 export function onShipDragEnter (canPlaceIndicator, row, cell) {
@@ -83,15 +85,32 @@ export function onShipDragEnter (canPlaceIndicator, row, cell) {
         canPlaceIndicator.classList.toggle('invalid', true);
         canPlaceIndicator.classList.toggle('valid', false);
     }
-
+ 
+    setSize(canPlaceIndicator, draggedShip.size, draggedShip.direction, 10);
     setPosition(canPlaceIndicator, row, cell);
 }
 
-export function onShipDrop (shipContainer, row, cell) {
-    setPosition(shipContainer, row, cell);
+export function onShipDragLeave (canPlaceIndicator) {
+    setSize(canPlaceIndicator, 0, 0, 0);
+}
+
+export function onShipDrop (shipContainer, row, cell, canPlaceIndicator) {
+    if (player.board.canPlace(draggedShip, [row, cell])) {
+        player.board.place(draggedShip, [row, cell]);
+        setPosition(shipContainer, row, cell);
+    } else {
+        player.board.place(draggedShip, previousLocation);
+        setPosition(shipContainer, previousLocation[0], previousLocation[1]);
+    }
+
+    draggedShip = null;
+    previousLocation = null;
+
     shipContainer.style.transform = 'translate(0px, 0px)';
     shipContainer.setAttribute('data-x', '0');
     shipContainer.setAttribute('data-y', '0');
+
+    setSize(canPlaceIndicator, 0, 0, 0);
 }
 
 export function onShipDrag (e) {
