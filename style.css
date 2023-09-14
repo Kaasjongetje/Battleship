@@ -62,7 +62,7 @@ form {
 }
 
 .ship-wrapper {
-    padding: 1px;
+    padding: 3px;
 }
 
 .ship {
@@ -73,5 +73,17 @@ form {
     z-index: 1;
 }
 
+.can-place-indicator {
+    position: absolute;
+    opacity: 0.5;
+}
+
+.can-place-indicator.valid {
+    background-color: green;
+}
+
+.can-place-indicator.invalid {
+    background-color: red;
+}
 
 

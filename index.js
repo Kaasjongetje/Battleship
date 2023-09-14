@@ -7,7 +7,7 @@ import { getForm, loadPage, getPreparation } from "./dom.js";
 export let player;
 const computer = new Player('The Computer');
 
-let selectedShip = null;
+let draggedShip = null;
 
 player = new Player('Kaasjongetje');// loadPage(getForm());
 
@@ -51,9 +51,9 @@ export function validateForm (e) {
     initializePlayer(name);
 }
 
-export function setSize (element, size, direction) {
-    element.style.width = direction === 'horizontal' ? `${size}00%` : '100%';
-    element.style.height = direction === 'vertical' ? `${size}00%` : '100%'
+export function setSize (element, size, direction, multiplier) {
+    element.style.width = direction === 'horizontal' ? `${size * multiplier}%` : `${multiplier}%`;
+    element.style.height = direction === 'vertical' ? `${size * multiplier}%` : `${multiplier}%`;
 }
 
 export function initializeShips (ships, initializeShip) {
@@ -69,8 +69,33 @@ export function setPosition (element, row, cell) {
     element.style.left = `${cell}0%`;
 }
 
-export function onShipDrop (row, cell) {
-    console.log(row, cell)
+export function onShipDragStart (ship, canPlaceIndicator) {
+    draggedShip = ship;
+    setSize(canPlaceIndicator, ship.size, ship.direction, 10);
+    console.log(draggedShip);
+}
+
+export function onShipDragEnter (canPlaceIndicator, row, cell) {
+    if (player.board.canPlace(draggedShip, [row, cell])) {
+        if (canPlaceIndicator.classList.contains('invalid'))
+            canPlaceIndicator.classList.remove('invalid');
+        if (!canPlaceIndicator.classList.contains('valid'))
+            canPlaceIndicator.classList.add('valid');
+    } else {
+        if (canPlaceIndicator.classList.contains('valid'))
+            canPlaceIndicator.classList.remove('valid');
+        if (!canPlaceIndicator.classList.contains('invalid'))
+            canPlaceIndicator.classList.add('invalid');
+    }
+
+    setPosition(canPlaceIndicator, row, cell);
+}
+
+export function onShipDrop (shipContainer, row, cell) {
+    setPosition(shipContainer, row, cell);
+    shipContainer.style.transform = 'translate(0px, 0px)';
+    shipContainer.setAttribute('data-x', '0');
+    shipContainer.setAttribute('data-y', '0');
 }
 
 export function onShipDrag (e) {

@@ -6,7 +6,9 @@ import {
     initializeShips,
     setPosition,
     onShipDrag,
-    onShipDrop
+    onShipDrop,
+    onShipDragStart,
+    onShipDragEnter
 
 } from "./index.js";
 import Board from "./board.js";
@@ -21,23 +23,27 @@ export function getPreparation() {
 
     const boardElement = createElement('board');
 
+    const canPlaceIndicator = createElement('can-place-indicator');
+    boardElement.appendChild(canPlaceIndicator);
+
     const shipContainers = [];
     for (const ship of player.board.ships) {
         const shipContainer = createElement('ship-container');
         interact(shipContainer).draggable({
+            modifiers: [
+                interact.modifiers.restrictRect({
+                  restriction: 'parent',
+                  endOnly: true
+                })
+              ],
             listeners: {
+                start: () => onShipDragStart(ship, canPlaceIndicator),
                 move: onShipDrag,
-                modifiers: [
-                    interact.modifiers.restrictRect({
-                      restriction: 'parent',
-                      endOnly: true
-                    })
-                  ],
             }
         });
 
         const shipWrapper = createElement('ship-wrapper');
-        setSize(shipWrapper, ship.size, ship.direction);
+        setSize(shipWrapper, ship.size, ship.direction, 100);
 
         const shipElement = createElement('ship');
 
@@ -64,7 +70,8 @@ export function getPreparation() {
         const tileElement = createElement(cell % 2 === 0 ? even : odd);
 
         interact(tileElement).dropzone({
-            ondrop: (e) => onShipDrop(row, cell),
+            ondragenter: () => onShipDragEnter(canPlaceIndicator, row, cell),
+            ondrop: (e) => onShipDrop(e.relatedTarget, row, cell),
         });
 
         boardElement.appendChild(tileElement);
