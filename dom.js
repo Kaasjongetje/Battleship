@@ -1,18 +1,12 @@
 import {
-    validateInput, 
-    validateForm,
     player,
     setSize,
-    initializeShips,
     setPosition,
-    onShipDrag,
-    onShipDrop,
-    onShipDragStart,
-    displayIndicator,
-    onShipDragLeave,
-    draggedShip,
-    onRotatorEnter
 } from "./index.js";
+import {
+    validateInput,
+    validateForm,
+} from "./form.js";
 import Board from "./board.js";
 import Ship from "./ship.js";
 
@@ -40,10 +34,12 @@ export function getPreparation() {
                 })
               ],
             listeners: {
-                start: () => onShipDragStart(ship, canPlaceIndicator, boardElement),
-                move: onShipDrag,
+                start: () => {},
+                move: () => {},
             }
         });
+
+        setPosition(shipContainer, ship.location);
 
         const shipWrapper = createElement('ship-wrapper');
         setSize(shipWrapper, ship.size, ship.direction, 100);
@@ -63,8 +59,6 @@ export function getPreparation() {
         shipContainers.push(shipContainer);
     }
 
-    initializeShips(shipContainers, (row, cell, shipContainer) => setPosition(shipContainer, row, cell));
-
     let even = 'light';
     let odd ='dark';
     let cellCounter = 0;
@@ -77,9 +71,9 @@ export function getPreparation() {
         const tileElement = createElement(cell % 2 === 0 ? even : odd);
 
         interact(tileElement).dropzone({
-            ondragenter: () => displayIndicator(draggedShip, row, cell),
-            ondrop: (e) => onShipDrop(e.relatedTarget, row, cell, canPlaceIndicator),
-            ondragleave: () => onShipDragLeave(canPlaceIndicator),
+            ondragenter: () => {},
+            ondrop: () => {},
+            ondragleave: () => {},
         });
 
         boardElement.appendChild(tileElement);
