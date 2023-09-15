@@ -58,11 +58,8 @@ form {
     position: absolute;
     width: 10%;
     height: 10%;
+    padding: calc(3.75% / 10);
     touch-action: none;
-}
-
-.ship-wrapper {
-    padding: 3px;
 }
 
 .ship {
@@ -92,8 +89,6 @@ form {
     height: 30px;
     background-image: url(rotator.svg);
     bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
     z-index: 3;
 }
 

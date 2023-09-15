@@ -9,6 +9,9 @@ import {
 } from "./form.js";
 import Board from "./board.js";
 import Ship from "./ship.js";
+import {
+    onShipDrag,
+} from "./preparation.js";
 
 export function loadPage (element) {
     removeChildNodes(document.body);
@@ -30,30 +33,27 @@ export function getPreparation() {
             modifiers: [
                 interact.modifiers.restrictRect({
                   restriction: 'parent',
-                  endOnly: true
+                  endOnly: true,
                 })
               ],
+              inertia: true,
             listeners: {
-                start: () => {},
-                move: () => {},
+                start: (e) => {},
+                move: (e) => onShipDrag(e),
             }
         });
 
         setPosition(shipContainer, ship.location);
-
-        const shipWrapper = createElement('ship-wrapper');
-        setSize(shipWrapper, ship.size, ship.direction, 100);
+        setSize(shipContainer, ship.size, ship.direction);
 
         const shipElement = createElement('ship');
 
-        shipWrapper.appendChild(shipElement);
+        shipContainer.appendChild(shipElement);
 
         const rotator = createElement('rotator');
-        rotator.addEventListener('mouseenter', () => onRotatorEnter(ship));
+        rotator.addEventListener('mouseenter', () => {});
 
         shipContainer.appendChild(rotator);
-
-        shipContainer.appendChild(shipWrapper);
 
         boardElement.appendChild(shipContainer);
         shipContainers.push(shipContainer);
