@@ -10,7 +10,7 @@ test('Returnt horizontale locaties', () => {
 
 test('Returnt verticale locaties', () => {
     expect(verticalShip.getLocations([3, 3]))
-    .toEqual([[3, 3], [2, 3], [1, 3]]);
+    .toEqual([[3, 3], [4, 3], [5, 3]]);
 });
 
 test('Returnt illegale horizontale locaties', () => {
@@ -19,6 +19,6 @@ test('Returnt illegale horizontale locaties', () => {
 });
 
 test('Returnt illegale verticale locaties', () => {
-    expect(verticalShip.getLocations([0, 0]))
-    .toEqual([[0, 0], [-1, 0], [-2, 0]]);
+    expect(verticalShip.getLocations([9, 0]))
+    .toEqual([[9, 0], [10, 0], [11, 0]]);
 });

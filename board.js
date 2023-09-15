@@ -68,7 +68,7 @@ export default class Board {
     }
 
     canPlace (ship, location) {
-        return this.isSuitableArea(ship.getLocations(location), (tile) => tile.ship === null || tile.ship === ship);
+        return this.isSuitableArea(ship.getLocations(location), (tile) => !tile.isOccupied());
     }
 
     isSuitableArea (area, isSuitable) {

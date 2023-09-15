@@ -26,7 +26,7 @@ test('De derde tile behoort niet bij het schip', () => {
 });
 
 test('Je kunt het verticale schip nu niet over de andere plaatsen', () => {
-    expect(board.canPlace(ship2, [4, 0])).toBe(false);
+    expect(board.canPlace(ship2, [0, 0])).toBe(false);
 });
 
 test('Je kunt een ander horizontaal schip niet eroverheen plaatsen', () => {
