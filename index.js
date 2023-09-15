@@ -114,6 +114,18 @@ export function onShipDrop (shipContainer, row, cell, canPlaceIndicator) {
     setSize(canPlaceIndicator, 0, 0, 0);
 }
 
+export function onRotatorEnter (ship) {
+    const row = ship.location[0];
+    const cell = ship.location[1];
+
+    player.board.remove(ship);
+
+    const shipClone = new Ship(ship.size, ship.direction);
+    shipClone.rotate();
+    console.log(ship.location)
+    displayIndicator(shipClone, row, cell);
+}
+
 export function onShipDrag (e) {
   const target = e.target
 

@@ -3,8 +3,4 @@ export default class Tile {
         this.ship = null;
         this.attacked = false;
     }
-
-    isOccupied() {
-        return this.ship !== null;
-    }
 }

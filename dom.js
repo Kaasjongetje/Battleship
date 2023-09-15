@@ -10,9 +10,11 @@ import {
     onShipDragStart,
     displayIndicator,
     onShipDragLeave,
-    draggedShip
+    draggedShip,
+    onRotatorEnter
 } from "./index.js";
 import Board from "./board.js";
+import Ship from "./ship.js";
 
 export function loadPage (element) {
     removeChildNodes(document.body);
@@ -51,7 +53,7 @@ export function getPreparation() {
         shipWrapper.appendChild(shipElement);
 
         const rotator = createElement('rotator');
-        rotator.addEventListener('mouseenter', () => console.log('hover'));
+        rotator.addEventListener('mouseenter', () => onRotatorEnter(ship));
 
         shipContainer.appendChild(rotator);
 
