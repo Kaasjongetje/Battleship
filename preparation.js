@@ -3,6 +3,7 @@ import {
   setPosition,
   setSize,
 } from "./index.js";
+import Ship from "./ship.js";
 
 let draggedShip = null;
 let previousLocation = null;
@@ -31,25 +32,31 @@ function setValidity (ship, location) {
   }
 }
 
+function getRotatedClone (ship) {
+  const rotatedClone = new Ship(ship.size, ship.direction);
+  rotatedClone.rotate();
+  return rotatedClone;
+}
+
 export function onTileEnter (location) {
   displayIndicator();
   setValidity(draggedShip, location);
   setPosition(getIndicator(), location);
 }
 
-export function onTileDrop (shipElement, location) {
-  shipElement.setAttribute('data-x', 0);
-  shipElement.setAttribute('data-y', 0);
-  shipElement.style.transform = 'translate(0px, 0px)';
+export function onTileDrop (shipContainer, location) {
+  shipContainer.setAttribute('data-x', 0);
+  shipContainer.setAttribute('data-y', 0);
+  shipContainer.style.transform = 'translate(0px, 0px)';
 
   hideIndicator();
 
   if (player.board.canPlace(draggedShip, location)) {
     player.board.place(draggedShip, location);
-    setPosition(shipElement, location);
+    setPosition(shipContainer, location);
   } else {
     player.board.place(draggedShip, previousLocation);
-    setPosition(shipElement, previousLocation);
+    setPosition(shipContainer, previousLocation);
   }
 
   draggedShip = null;
@@ -60,18 +67,43 @@ export function onTileLeave () {
   hideIndicator();
 }
 
-export function onRotatorEnter (ship) {
+export function onRotatorEnter (ship, rotator) {
   if (draggedShip !== null) return;
-  console.log('rotenter')
+  rotator.classList.add('hover');
+
+  const rotatedClone = getRotatedClone(ship);
+
+  previousLocation = ship.location;
+  player.board.remove(ship);
+
+  setSize(getIndicator(), rotatedClone.size, rotatedClone.direction);
+  displayIndicator();
+  setValidity(rotatedClone, previousLocation);
+  setPosition(getIndicator(), previousLocation);
 }
 
-export function onRotatorClick (ship) {
-  console.log('rotclick')
+export function onRotatorClick (ship, shipContainer) {
+  const rotatedClone = getRotatedClone(ship);
+
+  if (!player.board.canPlace(rotatedClone, previousLocation)) return;
+
+  ship.rotate();
+  setSize(shipContainer, ship.size, ship.direction);
+  
+  const rotatedBackClone = getRotatedClone(rotatedClone);
+  setSize(getIndicator(), rotatedBackClone.size, rotatedBackClone.direction);
 }
 
-export function onRotatorLeave (ship) {
+export function onRotatorLeave (ship, rotator) {
   if (draggedShip !== null) return;
-  console.log('rotleave')
+  
+  hideIndicator();
+
+  player.board.place(ship, previousLocation);
+
+  previousLocation = null;
+
+  rotator.classList.remove('hover');
 }
 
 export function onShipDrag (e) {

@@ -90,6 +90,10 @@ form {
     background-image: url(rotator.svg);
     bottom: 100%;
     z-index: 3;
+    transition: transform 250ms ease;
 }
 
+.rotator.hover {
+    transform: rotateZ(90deg);
+}
 

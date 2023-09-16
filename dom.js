@@ -58,9 +58,9 @@ export function getPreparation() {
         shipContainer.appendChild(shipElement);
 
         const rotator = createElement('rotator');
-        rotator.addEventListener('mouseenter', () => onRotatorEnter(ship));
-        rotator.addEventListener('click', () => onRotatorClick(ship));
-        rotator.addEventListener('mouseleave', () => onRotatorLeave(ship));
+        rotator.addEventListener('mouseenter', () => onRotatorEnter(ship, rotator));
+        rotator.addEventListener('click', () => onRotatorClick(ship, shipContainer));
+        rotator.addEventListener('mouseleave', () => onRotatorLeave(ship, rotator));
 
         shipContainer.appendChild(rotator);
 
