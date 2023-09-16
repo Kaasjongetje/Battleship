@@ -11,6 +11,13 @@ import Board from "./board.js";
 import Ship from "./ship.js";
 import {
     onShipDrag,
+    onShipDragStart,
+    onTileEnter,
+    onTileDrop,
+    onTileLeave,
+    onRotatorEnter,
+    onRotatorClick,
+    onRotatorLeave,
 } from "./preparation.js";
 
 export function loadPage (element) {
@@ -38,7 +45,7 @@ export function getPreparation() {
               ],
               inertia: true,
             listeners: {
-                start: (e) => {},
+                start: () => onShipDragStart(ship),
                 move: (e) => onShipDrag(e),
             }
         });
@@ -51,7 +58,9 @@ export function getPreparation() {
         shipContainer.appendChild(shipElement);
 
         const rotator = createElement('rotator');
-        rotator.addEventListener('mouseenter', () => {});
+        rotator.addEventListener('mouseenter', () => onRotatorEnter(ship));
+        rotator.addEventListener('click', () => onRotatorClick(ship));
+        rotator.addEventListener('mouseleave', () => onRotatorLeave(ship));
 
         shipContainer.appendChild(rotator);
 
@@ -71,9 +80,9 @@ export function getPreparation() {
         const tileElement = createElement(cell % 2 === 0 ? even : odd);
 
         interact(tileElement).dropzone({
-            ondragenter: () => {},
-            ondrop: () => {},
-            ondragleave: () => {},
+            ondragenter: () => onTileEnter([row, cell]),
+            ondrop: (e) => onTileDrop(e.relatedTarget, [row, cell]),
+            ondragleave: () => onTileLeave(),
         });
 
         boardElement.appendChild(tileElement);

@@ -21,9 +21,9 @@ export function initializePreparation (playerName) {
     loadPage(getPreparation());
 }
 
-export function setSize (element, size, direction, multiplier) {
-    element.style.width = direction === 'horizontal' ? `${size * multiplier}%` : `${multiplier}%`;
-    element.style.height = direction === 'vertical' ? `${size * multiplier}%` : `${multiplier}%`;
+export function setSize (element, size, direction) {
+    element.style.width = direction === 'horizontal' ? `${size}0%` : `10%`;
+    element.style.height = direction === 'vertical' ? `${size}0%` : `10%`;
 }
 
 export function setPosition (element, location) {
