@@ -67,7 +67,6 @@ form {
     border-radius: 100vmax;
     width: 100%;
     height: 100%;
-    z-index: 2;
 }
 
 .can-place-indicator {
@@ -89,7 +88,6 @@ form {
     height: 30px;
     background-image: url(rotator.svg);
     bottom: 100%;
-    z-index: 3;
     transition: transform 250ms ease;
 }
 
