@@ -7,6 +7,7 @@ import Ship from "./ship.js";
 
 let draggedShip = null;
 let previousLocation = null;
+let offset = null;
 
 function getIndicator() {
   return document.querySelector('.can-place-indicator');
@@ -38,10 +39,41 @@ function getRotatedClone (ship) {
   return rotatedClone;
 }
 
+function getOffset (e, size, direction) {
+  const element = e.target;
+  const rectangle = element.getBoundingClientRect();
+
+  let partSize;
+  let clickPosition;
+
+  if (direction === 'vertical') {
+    partSize = rectangle.height / size;
+    clickPosition = e.clientY - rectangle.top;
+  } else {
+    partSize = rectangle.width / size;
+    clickPosition = e.clientX - rectangle.left;
+  }
+
+  for (let part = 0; part < size; part++) {
+    if (part * partSize <= clickPosition  && clickPosition < (part + 1) * partSize) {
+      return part; 
+    }
+  }
+
+  return 0;
+}
+
+function getOffsetLocation (location, direction) {
+  const row = direction === 'vertical' ? location[0] - offset : location[0];
+  const cell = direction === 'horizontal' ? location[1] - offset : location[1];
+  return [row, cell];
+}
+
 export function onTileEnter (location) {
   displayIndicator();
-  setValidity(draggedShip, location);
-  setPosition(getIndicator(), location);
+  const offsetLocation = getOffsetLocation(location, draggedShip.direction);
+  setValidity(draggedShip, offsetLocation);
+  setPosition(getIndicator(), offsetLocation);
 }
 
 export function onTileDrop (shipContainer, location) {
@@ -51,9 +83,10 @@ export function onTileDrop (shipContainer, location) {
 
   hideIndicator();
 
-  if (player.board.canPlace(draggedShip, location)) {
-    player.board.place(draggedShip, location);
-    setPosition(shipContainer, location);
+  const offsetLocation = getOffsetLocation(location, draggedShip.direction);
+  if (player.board.canPlace(draggedShip, offsetLocation)) {
+    player.board.place(draggedShip, offsetLocation);
+    setPosition(shipContainer, offsetLocation);
   } else {
     player.board.place(draggedShip, previousLocation);
     setPosition(shipContainer, previousLocation);
@@ -61,15 +94,18 @@ export function onTileDrop (shipContainer, location) {
 
   draggedShip = null;
   previousLocation = null;
+  offset = null;
 }
 
 export function onTileLeave () {
   hideIndicator();
 }
 
-export function onRotatorEnter (ship, rotator) {
+export function onRotatorEnter (ship, rotator, shipContainer) {
   if (draggedShip !== null) return;
+
   rotator.classList.add('hover');
+  interact(shipContainer).draggable(false);
 
   const rotatedClone = getRotatedClone(ship);
 
@@ -94,7 +130,7 @@ export function onRotatorClick (ship, shipContainer) {
   setSize(getIndicator(), rotatedBackClone.size, rotatedBackClone.direction);
 }
 
-export function onRotatorLeave (ship, rotator) {
+export function onRotatorLeave (ship, rotator, shipContainer) {
   if (draggedShip !== null) return;
   
   hideIndicator();
@@ -104,6 +140,7 @@ export function onRotatorLeave (ship, rotator) {
   previousLocation = null;
 
   rotator.classList.remove('hover');
+  interact(shipContainer).draggable(true);
 }
 
 export function onShipDrag (e) {
@@ -118,9 +155,10 @@ export function onShipDrag (e) {
     target.setAttribute('data-y', y);
 }
 
-export function onShipDragStart (ship) {
+export function onShipDragStart (e, ship) {
   draggedShip = ship;
   previousLocation = ship.location;
+  offset = getOffset(e, ship.size, ship.direction);
 
   player.board.remove(ship);
   setSize(getIndicator(), ship.size, ship.direction);

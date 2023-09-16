@@ -27,6 +27,6 @@ export function setSize (element, size, direction) {
 }
 
 export function setPosition (element, location) {
-    element.style.top = `${location[0]}0%`;
-    element.style.left = `${location[1]}0%`;
+    element.style.top = `${location[0] * 10}%`;
+    element.style.left = `${location[1] * 10}%`;
 }

@@ -40,12 +40,11 @@ export function getPreparation() {
             modifiers: [
                 interact.modifiers.restrictRect({
                   restriction: 'parent',
-                  endOnly: true,
+                  endOnly: false,
                 })
               ],
-              inertia: true,
             listeners: {
-                start: () => onShipDragStart(ship),
+                start: (e) => onShipDragStart(e, ship),
                 move: (e) => onShipDrag(e),
             }
         });
@@ -58,9 +57,9 @@ export function getPreparation() {
         shipContainer.appendChild(shipElement);
 
         const rotator = createElement('rotator');
-        rotator.addEventListener('mouseenter', () => onRotatorEnter(ship, rotator));
+        rotator.addEventListener('mouseenter', () => onRotatorEnter(ship, rotator, shipContainer));
         rotator.addEventListener('click', () => onRotatorClick(ship, shipContainer));
-        rotator.addEventListener('mouseleave', () => onRotatorLeave(ship, rotator));
+        rotator.addEventListener('mouseleave', () => onRotatorLeave(ship, rotator, shipContainer));
 
         shipContainer.appendChild(rotator);
 
