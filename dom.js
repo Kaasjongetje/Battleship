@@ -18,54 +18,37 @@ import {
     onRotatorEnter,
     onRotatorClick,
     onRotatorLeave,
+    onRandomLayoutClick,
 } from "./preparation.js";
+import {
+    onTileClick
+} from "./battle.js";
 
 export function loadPage (element) {
     removeChildNodes(document.body);
     document.body.appendChild(element);
 }
 
-export function getPreparation() {
-    const preparationElement = createElement('preparation');
+export function getBattle() {
+    const battleElement = createElement('battle');
 
+    const messageElement = createElement('message');
+    battleElement.appendChild(messageElement);
+
+    const playerBoard = createBoard();
+    battleElement.appendChild(playerBoard);
+
+    addShips(player.board.ships, boardElement);
+
+    const computerBoard = createBoard((tileElement, row, cell) => {
+        tileElement.addEventListener('click', () => onTileClick([row, cell]))
+    });
+
+    return battleElement;
+}
+
+function createBoard(customizeTile) {
     const boardElement = createElement('board');
-
-    const canPlaceIndicator = createElement('can-place-indicator');
-    boardElement.appendChild(canPlaceIndicator);
-
-    const shipContainers = [];
-    for (const ship of player.board.ships) {
-        const shipContainer = createElement('ship-container');
-        interact(shipContainer).draggable({
-            modifiers: [
-                interact.modifiers.restrictRect({
-                  restriction: 'parent',
-                  endOnly: false,
-                })
-              ],
-            listeners: {
-                start: (e) => onShipDragStart(e, ship),
-                move: (e) => onShipDrag(e),
-            }
-        });
-
-        setPosition(shipContainer, ship.location);
-        setSize(shipContainer, ship.size, ship.direction);
-
-        const shipElement = createElement('ship');
-
-        shipContainer.appendChild(shipElement);
-
-        const rotator = createElement('rotator');
-        rotator.addEventListener('mouseenter', () => onRotatorEnter(ship, rotator, shipContainer));
-        rotator.addEventListener('click', () => onRotatorClick(ship, shipContainer));
-        rotator.addEventListener('mouseleave', () => onRotatorLeave(ship, rotator, shipContainer));
-
-        shipContainer.appendChild(rotator);
-
-        boardElement.appendChild(shipContainer);
-        shipContainers.push(shipContainer);
-    }
 
     let even = 'light';
     let odd ='dark';
@@ -78,17 +61,74 @@ export function getPreparation() {
 
         const tileElement = createElement(cell % 2 === 0 ? even : odd);
 
-        interact(tileElement).dropzone({
-            ondragenter: () => onTileEnter([row, cell]),
-            ondrop: (e) => onTileDrop(e.relatedTarget, [row, cell]),
-            ondragleave: () => onTileLeave(),
-        });
+        if (customizeTile !== undefined) customizeTile(tileElement, row, cell);
 
         boardElement.appendChild(tileElement);
         cellCounter++;
     });
 
+    return boardElement;
+}
+
+function addShips (ships, boardElement, customizeShip) {
+    for (const ship of ships) {
+        const shipContainer = createElement('ship-container');
+        
+        setPosition(shipContainer, ship.location);
+        setSize(shipContainer, ship.size, ship.direction);
+
+        if (customizeShip !== undefined) customizeShip(shipContainer, ship);
+
+        const shipElement = createElement('ship');
+        shipContainer.appendChild(shipElement);
+
+        boardElement.appendChild(shipContainer);
+    }
+}
+
+export function getPreparation() {
+    const preparationElement = createElement('preparation');
+
+    const boardElement = createBoard((tileElement, row, cell) => {
+        interact(tileElement).dropzone({
+            ondragenter: () => onTileEnter([row, cell]),
+            ondrop: (e) => onTileDrop(e.relatedTarget, [row, cell]),
+            ondragleave: () => onTileLeave(),
+        });       
+    });
+
+    const canPlaceIndicator = createElement('can-place-indicator');
+    boardElement.appendChild(canPlaceIndicator);
+
+    addShips(player.board.ships, boardElement, (shipContainer, ship) => {
+        interact(shipContainer).draggable({
+            modifiers: [
+                interact.modifiers.restrictRect({
+                  restriction: 'parent',
+                  endOnly: false,
+                })
+              ],
+            listeners: {
+                start: (e) => onShipDragStart(e, ship),
+                move: (e) => onShipDrag(e),
+            }
+        });
+        
+        const rotator = createElement('rotator');
+
+        rotator.addEventListener('mouseenter', () => onRotatorEnter(ship, rotator, shipContainer));
+        rotator.addEventListener('click', () => onRotatorClick(ship, shipContainer));
+        rotator.addEventListener('mouseleave', () => onRotatorLeave(ship, rotator, shipContainer));
+
+        shipContainer.appendChild(rotator);
+    });
+
     preparationElement.appendChild(boardElement);
+
+    const randomLayoutButton = createElement('random-layout-btn');
+    randomLayoutButton.textContent = 'Random Layout';
+    randomLayoutButton.addEventListener('click', () => onRandomLayoutClick());
+    preparationElement.appendChild(randomLayoutButton);
 
     return preparationElement;
 }
