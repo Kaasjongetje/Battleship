@@ -8,7 +8,7 @@ export default class Board {
         this.tiles.forEach((row) => {
             let rowString = '';
             row.forEach((tile) => {
-                rowString += tile.attacked ? 'X' : '-';
+                rowString += tile.ship !== null ? 'X' : '-';
             });
             console.log(rowString);
         });
@@ -46,6 +46,8 @@ export default class Board {
     }
 
     remove (ship) {
+        if (ship.location === null) return;
+
         const locations = ship.getLocations(ship.location);
 
         locations.forEach((location) => {
@@ -95,6 +97,39 @@ export default class Board {
             }
         }
         return map;
+    }
+
+    static getRandomLocation(from = [0, 0], to = [9, 9]) {
+        const minX = from[0];
+        const maxX = to[0];
+        const minY = from[1];
+        const maxY = to[1];
+    
+        const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+        const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+    
+        return [randomX, randomY];
+    }
+
+    placeRandomly (disallowTouch) {
+        this.ships.forEach((ship) => this.remove(ship)); //this.remove om korter te maken
+
+        this.ships.forEach((ship) => {
+            ship.setRandomDirection();
+
+            const from = [0, 0];
+            const toRow = ship.direction === 'horizontal' ? Board.size - 1 : Board.size - ship.size;
+            const toCell = ship.direction === 'horizontal' ? Board.size - ship.size : Board.size - 1;
+            const to = [toRow, toCell];
+
+            let randomLocation;
+            do {
+                randomLocation = Board.getRandomLocation(from, to);
+            } while (!this.canPlace(ship, randomLocation));
+
+
+            this.place(ship, randomLocation);
+        });
     }
 
 }

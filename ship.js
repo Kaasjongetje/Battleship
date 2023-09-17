@@ -17,7 +17,7 @@ export default class Ship {
 
     getLocations (location) {
         const [rowIncrement, columnIncrement] = Ship.DIRECTIONS[this.direction];
- 
+
         let row = location[0];
         let column = location[1];
  
@@ -39,6 +39,12 @@ export default class Ship {
      initializeShips() {
         this.ships = [];
         
+    }
+
+    setRandomDirection() {
+        const directions = Object.keys(Ship.DIRECTIONS);
+        const randomIndex = Math.floor(Math.random() * directions.length);
+        this.direction = directions[randomIndex];
     }
 
     static createShips() {
