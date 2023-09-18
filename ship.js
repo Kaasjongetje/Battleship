@@ -32,6 +32,28 @@ export default class Ship {
         return locations;
      }
 
+     getAdjacentLocations (location) {
+        const adjacentLocations = [];
+
+        if (this.direction === 'horizontal') {
+            adjacentLocations.push([location[0], location[1] - 1]);
+            adjacentLocations.push([location[0], location[1] + this.size]);
+            for (let i = location[1]; i < location[1] + this.size; i++) {
+                adjacentLocations.push([location[0] - 1, i]);
+                adjacentLocations.push([location[0] + 1, i]);
+            }
+        } else {
+            adjacentLocations.push([location[0] - 1, location[1]]);
+            adjacentLocations.push([location[0] + this.size, location[1]]);
+            for (let i = location[0]; i < location[0] + this.size; i++) {
+                adjacentLocations.push([i, location[1] - 1]);
+                adjacentLocations.push([i, location[1] + 1]);
+            }
+        }
+
+        return adjacentLocations;
+     }
+
      rotate() {
         this.direction === 'horizontal' ? this.direction = 'vertical' : this.direction = 'horizontal';
      }
