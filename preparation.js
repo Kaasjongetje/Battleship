@@ -1,4 +1,9 @@
+import { 
+  getBattle, 
+  loadPage 
+} from "./dom.js";
 import {
+  computer,
   player,
   setPosition,
   setSize,
@@ -162,4 +167,24 @@ export function onShipDragStart (e, ship) {
 
   player.board.remove(ship);
   setSize(getIndicator(), ship.size, ship.direction);
+}
+
+export function onRandomLayoutClick () {
+  // Schepen mogen elkaar aanraken
+  player.board.placeRandomly(true);
+
+  const shipContainers = [...document.querySelectorAll('.ship-container')];
+
+  for (let i = 0; i < player.board.ships.length; i++) {
+    const ship = player.board.ships[i];
+
+    setSize(shipContainers[i], ship.size, ship.direction);
+    setPosition(shipContainers[i], ship.location);
+  }
+}
+
+export function onGameStart() {
+  computer.board.placeRandomly(false);
+  computer.board.ships.forEach(console.log);
+  loadPage(getBattle());
 }
