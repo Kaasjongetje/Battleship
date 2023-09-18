@@ -9,6 +9,10 @@ import {
   setSize,
 } from "./index.js";
 import Ship from "./ship.js";
+import {
+  displayMessage,
+  setCurrentPlayer,
+} from "./battle.js";
 
 let draggedShip = null;
 let previousLocation = null;
@@ -185,6 +189,11 @@ export function onRandomLayoutClick () {
 
 export function onGameStart() {
   computer.board.placeRandomly(false);
-  computer.board.ships.forEach(console.log);
+  setCurrentPlayer(player);
+
+  console.log(computer.board.ships);
+
   loadPage(getBattle());
+
+  displayMessage(`It's ${player.name}'s turn`);
 }

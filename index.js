@@ -5,7 +5,7 @@ import AI, { printArray } from "./ai.js";
 import { getForm, loadPage, getPreparation } from "./dom.js";
 
 export let player;
-const computer = new Player('The Computer');
+export const computer = new Player('The Computer');
 
 // loadPage(getForm());
 

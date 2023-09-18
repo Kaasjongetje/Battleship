@@ -19,6 +19,7 @@ import {
     onRotatorClick,
     onRotatorLeave,
     onRandomLayoutClick,
+    onGameStart,
 } from "./preparation.js";
 import {
     onTileClick
@@ -33,16 +34,22 @@ export function getBattle() {
     const battleElement = createElement('battle');
 
     const messageElement = createElement('message');
+    messageElement.textContent = 'test';
     battleElement.appendChild(messageElement);
 
     const playerBoard = createBoard();
-    battleElement.appendChild(playerBoard);
 
-    addShips(player.board.ships, boardElement);
+    addShips(player.board.ships, playerBoard);
 
     const computerBoard = createBoard((tileElement, row, cell) => {
         tileElement.addEventListener('click', () => onTileClick([row, cell]))
     });
+    
+    const boardContainer = createElement('board-container');
+    boardContainer.appendChild(playerBoard);
+    boardContainer.appendChild(computerBoard);
+
+    battleElement.appendChild(boardContainer);
 
     return battleElement;
 }
@@ -130,10 +137,15 @@ export function getPreparation() {
     randomLayoutButton.addEventListener('click', () => onRandomLayoutClick());
     preparationElement.appendChild(randomLayoutButton);
 
+    const battleButton = createElement('battle-btn');
+    battleButton.textContent = 'Start Game';
+    battleButton.addEventListener('click', () => onGameStart());
+    preparationElement.appendChild(battleButton);
+
     return preparationElement;
 }
 
-function createElement(classname) {
+export function createElement(classname) {
     const element = document.createElement('div');
     element.classList.add(classname);
     return element;
