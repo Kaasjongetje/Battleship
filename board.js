@@ -8,7 +8,7 @@ export default class Board {
         this.tiles.forEach((row) => {
             let rowString = '';
             row.forEach((tile) => {
-                rowString += tile.ship !== null ? 'X' : '-';
+                rowString += tile.ship !== null ? tile.ship.size : '-';
             });
             console.log(rowString);
         });
@@ -46,8 +46,6 @@ export default class Board {
     }
 
     remove (ship) {
-        if (ship.location === null) return;
-
         const locations = ship.getLocations(ship.location);
 
         locations.forEach((location) => {
@@ -76,7 +74,6 @@ export default class Board {
         });
     }
 
-    
     static isValidLocation (location) {
         return 0 <= location[0] && location[0] < Board.size && 0 <= location[1] && location[1] < Board.size;
     }
@@ -108,8 +105,10 @@ export default class Board {
         return [randomX, randomY];
     }
 
-    placeRandomly (disallowTouch) {
-        this.ships.forEach((ship) => this.remove(ship)); //this.remove om korter te maken
+    placeRandomly (allowTouching) {
+        this.ships.forEach((ship) => {
+            if (ship.location !== null) this.remove(ship);
+        });
 
         this.ships.forEach((ship) => {
             ship.setRandomDirection();
@@ -120,10 +119,21 @@ export default class Board {
             const to = [toRow, toCell];
 
             let randomLocation;
-            do {
-                randomLocation = Board.getRandomLocation(from, to);
-            } while (!this.canPlace(ship, randomLocation));
+            let desirableLocation = false;
 
+            while (!desirableLocation) {
+                randomLocation = Board.getRandomLocation(from, to);
+
+                desirableLocation = this.canPlace(ship, randomLocation);
+
+                if (!desirableLocation || allowTouching) continue;
+
+                desirableLocation = ship.getAdjacentLocations(randomLocation).every((location) => {
+                    if (!Board.isValidLocation(location)) return true;
+                    return this.getTile(location).ship === null;
+                });
+
+            }
 
             this.place(ship, randomLocation);
         });
