@@ -70,15 +70,12 @@ export default class Board {
     }
 
     canPlace (ship, location) {
-        return this.isSuitableArea(ship.getLocations(location), (tile) => !tile.isOccupied());
-    }
-
-    isSuitableArea (area, isSuitable) {
-        return area.every((location) => {
+        return ship.getLocations(location).every((location) => {
             if (!Board.isValidLocation(location)) return false;
-            return isSuitable(this.getTile(location));
+            return !this.getTile(location).isOccupied();
         });
     }
+
     
     static isValidLocation (location) {
         return 0 <= location[0] && location[0] < Board.size && 0 <= location[1] && location[1] < Board.size;
