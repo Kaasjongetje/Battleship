@@ -39,7 +39,7 @@ Maken:
 
 
 2. AI
-
+!!! Als het niet mogelijk is een schip te plaatsen in een richting dan kies die richting niet
 Zoek vanuit eerste deel in schipdelen als dat kan
     Kies de een richting die niet kans 0 heeft
         Ga in die richting

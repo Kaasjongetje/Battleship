@@ -4,11 +4,21 @@ import Ship from "./ship.js";
 export default class AI {
     constructor (board) {
         this.board = board;
-        this.foundShipLocations = [];
-        this.originalLocation = null;
-        this.targetDirection = null;
-        this.latestTargetLocation = null;
-        this.updateProbabilityMap();
+        // this.foundShipLocations = [];
+        // this.originalLocation = null;
+        // this.targetDirection = null;
+        // this.latestTargetLocation = null;
+        // this.updateProbabilityMap();
+    }
+
+    getBestMove() {
+        let randomLocation;
+        
+        do {
+            randomLocation = Board.getRandomLocation();
+        } while (!this.board.canAttack(randomLocation));
+
+        return randomLocation;
     }
 
     play() {
@@ -103,7 +113,8 @@ export default class AI {
             for (let row = minRow; row <= maxRow; row++) {
                 for (let cell = 0; cell <= maxCell; cell++) {
                     const area = ship.getLocations([row, cell]);
-                    if (this.board.isSuitableArea(area, (tile) => !tile.attacked)) {
+                    if (area.every((location) => !this.board.getTile(location).attacked)) {
+                        // als hier iets fout gaat dat kan, ik heb iets veranderd
                         area.forEach((location) => probabilityMap[location[0]][location[1]] += 1);
                     }
                 }

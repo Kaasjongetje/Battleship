@@ -22,6 +22,7 @@ import {
     onGameStart,
 } from "./preparation.js";
 import {
+    onPlayAgainClick,
     onTileClick
 } from "./battle.js";
 
@@ -48,8 +49,12 @@ export function getBattle() {
     const boardContainer = createElement('board-container');
     boardContainer.appendChild(playerBoard);
     boardContainer.appendChild(computerBoard);
-
     battleElement.appendChild(boardContainer);
+
+    const playAgainButton = createElement('play-again-btn');
+    playAgainButton.textContent = 'Play Again';
+    playAgainButton.addEventListener('click', () => onPlayAgainClick());
+    battleElement.appendChild(playAgainButton);
 
     return battleElement;
 }

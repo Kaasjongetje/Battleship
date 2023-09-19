@@ -191,8 +191,6 @@ export function onGameStart() {
   computer.board.placeRandomly(false);
   setCurrentPlayer(player);
 
-  console.log(computer.board.ships);
-
   loadPage(getBattle());
 
   displayMessage(`It's ${player.name}'s turn`);

@@ -3,10 +3,16 @@ import {
     computer,
     setSize,
 } from "./index.js";
-import { createElement } from "./dom.js";
-import { setPosition } from "./index.js";
+import { createElement, getPreparation, loadPage } from "./dom.js";
+import { 
+    setPosition,
+    ai,
+ } from "./index.js";
+import Board from "./board.js";
+import { initializePreparation } from "./form.js";
 
 let currentPlayer;
+let gameOver = false;
 
 export function setCurrentPlayer (inputPlayer) {
     currentPlayer = inputPlayer;
@@ -21,8 +27,8 @@ function getBoard (inputPlayer) {
     return inputPlayer === player ? boardElements[0] : boardElements[1];
 }
 
-function playTurn (location) {
-    const opponent = getOpponent(currentPlayer);
+function playTurn (inputPlayer, location) {
+    const opponent = getOpponent(inputPlayer);
     
     opponent.board.attack(location);
     const ship = opponent.board.getTile(location).ship;
@@ -30,18 +36,28 @@ function playTurn (location) {
     displayAttack(opponent, location, ship !== null);
 
     if (ship === null) {
-        // currentPlayer = opponent;
-        // if (opponent === computer) {
-        //     playTurn();
-        // }
+        currentPlayer = opponent;
+        displayMessage(`It's ${opponent.name}'s turn`);
+
+        if (opponent === computer) playTurn(opponent, ai.getBestMove());
+        
         return;
     }
 
     if (ship.isSunk()) {
-        displayShip(opponent, ship);
+        if (inputPlayer === player) displayShip(opponent, ship);
+
+        if (opponent.board.allShipsSunk()) {
+            gameOver = true;
+            displayMessage(`${inputPlayer.name} won the game`);
+            displayPlayAgain();
+            return;
+        }
     }
 
+    displayMessage(`${inputPlayer.name} hit a ship, he/she can shoot another time`);
 
+    if (inputPlayer === computer) playTurn(computer, ai.getBestMove());
 }
 
 function displayAttack (attackedPlayer, location, hit) {
@@ -64,12 +80,26 @@ function displayShip (attackedPlayer, ship)  {
     getBoard(attackedPlayer).appendChild(shipContainer);
 }
 
+function displayPlayAgain() {
+    document.querySelector('.play-again-btn').style.display = 'block';
+}
+
 export function displayMessage (message) {
     const messageElement = document.querySelector('.message');
     messageElement.textContent = message;
 }
 
 export function onTileClick (location) {
-    playTurn(location);
-   
+    if (gameOver) return;
+    if (currentPlayer === computer) return;
+    if (!computer.board.canAttack(location)) return;
+
+    playTurn(player, location);
+}
+
+export function onPlayAgainClick() {
+    player.board = new Board();
+    computer.board = new Board();
+    initializePreparation(player.name);
+    gameOver = false;
 }
