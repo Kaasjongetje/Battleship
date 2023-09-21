@@ -19,7 +19,7 @@ export default class Board {
         this.ships = Ship.createShips();
     }
     
-    static forEachTile (map, callback, from = [0, 0], to = [9, 9]) {
+    static forEachTile (map, from, to, callback) {
         for (let row = from[0]; row <= to[0]; row++) {
             for (let cell = from[1]; cell <= to[1]; cell++) {
                 callback(map[row][cell], row, cell);
@@ -105,6 +105,10 @@ export default class Board {
         return [randomX, randomY];
     }
 
+    static getAdjacentLocations (location) {
+        
+    }
+
     placeRandomly (allowTouching) {
         this.ships.forEach((ship) => {
             if (ship.location !== null) this.remove(ship);
@@ -113,16 +117,11 @@ export default class Board {
         this.ships.forEach((ship) => {
             ship.setRandomDirection();
 
-            const from = [0, 0];
-            const toRow = ship.direction === 'horizontal' ? Board.size - 1 : Board.size - ship.size;
-            const toCell = ship.direction === 'horizontal' ? Board.size - ship.size : Board.size - 1;
-            const to = [toRow, toCell];
-
             let randomLocation;
             let desirableLocation = false;
 
             while (!desirableLocation) {
-                randomLocation = Board.getRandomLocation(from, to);
+                randomLocation = Board.getRandomLocation([0, 0], ship.getMaxLocation());
 
                 desirableLocation = this.canPlace(ship, randomLocation);
 
