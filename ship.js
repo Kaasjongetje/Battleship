@@ -1,3 +1,5 @@
+import Board from "./board.js";
+
 export default class Ship {
     constructor (size, direction, name) {
         this.size = size;
@@ -83,6 +85,12 @@ export default class Ship {
         const directions = Object.keys(Ship.DIRECTIONS);
         const randomIndex = Math.floor(Math.random() * directions.length);
         this.direction = directions[randomIndex];
+    }
+
+    getMaxLocation() {
+        const maxRow = this.direction === 'horizontal' ? Board.size - 1 : Board.size - this.size;
+        const maxCell = this.direction === 'horizontal' ? Board.size - this.size : Board.size - 1;
+        return [maxRow, maxCell];
     }
 
     static createShips() {
