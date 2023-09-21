@@ -107,6 +107,10 @@ export default class Ship {
         'vertical': [1, 0]
     }
 
+    static getOppositeDirection (direction) {
+        return direction === 'horizontal' ? [0, -1] : [-1, 0];
+    }
+
     static SHIPS = {
         'Destroyer': 2,
         'Submarine': 3,
