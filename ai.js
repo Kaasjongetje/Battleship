@@ -4,6 +4,8 @@ import Ship from "./ship.js";
 export default class AI {
     constructor (board) {
         this.board = board;
+        this.probabilityMap = null;
+
         // this.foundShipLocations = [];
         // this.originalLocation = null;
         // this.targetDirection = null;
@@ -21,46 +23,45 @@ export default class AI {
         return randomLocation;
     }
 
-    play() {
-        if (this.foundShipParts.length <= 0) {
-            const locationToAttack = this.getRandomItem(this.probabilityMap);
-            this.board.attack(locationToAttack);
-            if (this.board.getTile(locationToAttack).ship !== null) {
-                this.foundShipParts.push(locationToAttack);
-            }
-        } else {
-            this.getNextTarget();
-        }
-    }
+    // play() {
+    //     if (this.foundShipParts.length <= 0) {
+    //         const locationToAttack = this.getRandomItem(this.probabilityMap);
+    //         this.board.attack(locationToAttack);
+    //         if (this.board.getTile(locationToAttack).ship !== null) {
+    //             this.foundShipParts.push(locationToAttack);
+    //         }
+    //     } else {
+    //         this.getNextTarget();
+    //     }
+    // }
 
-    getNextTarget() {
-        if (this.originalLocationLocation === null) {
-            this.originalLocationLocation = this.foundShipLocations[0];
-            this.chooseDirection();
-        }
+    // getNextTarget() {
+    //     if (this.originalLocationLocation === null) {
+    //         this.originalLocationLocation = this.foundShipLocations[0];
+    //         this.chooseDirection();
+    //     }
 
-        let nextTargetLocation = this.goForwards();
+    //     let nextTargetLocation = this.goForwards();
 
-        while (!this.board.canAttack(nextTargetLocation)) {
-            this.chooseDirection();
-            nextTargetLocation = this.goForwards();
-        }
+    //     while (!this.board.canAttack(nextTargetLocation)) {
+    //         this.chooseDirection();
+    //         nextTargetLocation = this.goForwards();
+    //     }
 
-        this.board.attack(nextTargetLocation);
-        this.latestTargetLocation = nextTargetLocation;
-
-
+    //     this.board.attack(nextTargetLocation);
+    //     this.latestTargetLocation = nextTargetLocation;
 
 
 
-    }
+
+
+    // }
 
     getHighestProbabilityLocations() {
-        this.updateProbabilityMap();
         let highestChance = 0;
         let highestProbabilityLocations = [];
 
-        Board.forEachTile(this.probabilityMap, (chance, row, cell) => {
+        Board.forEachTile(this.probabilityMap, [0, 0], [9, 9], (chance, row, cell) => {
             if (chance < highestChance) return;
 
             if (chance > highestChance) {
@@ -105,21 +106,27 @@ export default class AI {
 
     updateProbabilityMap() {
         const probabilityMap = Board.createMap(() => 0);
-        for (const ship of this.getPotentialShips()) {
-            const minRow = ship.direction === 'horizontal' ? 0 : ship.size - 1;
-            const maxRow = Board.size - 1;
-            const maxCell = ship.direction === 'horizontal' ? Board.size - ship.size : Board.size - 1;
 
-            for (let row = minRow; row <= maxRow; row++) {
-                for (let cell = 0; cell <= maxCell; cell++) {
-                    const area = ship.getLocations([row, cell]);
-                    if (area.every((location) => !this.board.getTile(location).attacked)) {
-                        // als hier iets fout gaat dat kan, ik heb iets veranderd
-                        area.forEach((location) => probabilityMap[location[0]][location[1]] += 1);
-                    }
-                }
-            }
+        for (const ship of this.getPotentialShips()) {
+            Board.forEachTile(probabilityMap, [0, 0], ship.getMaxLocation(), (tile, row, cell) => {
+                const area = ship.getLocations([row, cell]);
+
+                if (area.some((location) => this.board.getTile(location).attacked)) return;
+
+                area.forEach((location) => probabilityMap[location[0]][location[1]]++);
+            });
+
+            // for (let row = minRow; row <= maxRow; row++) {
+            //     for (let cell = 0; cell <= maxCell; cell++) {
+            //         const area = ship.getLocations([row, cell]);
+            //         if (area.every((location) => !this.board.getTile(location).attacked)) {
+            //             // als hier iets fout gaat dat kan, ik heb iets veranderd
+            //             area.forEach((location) => probabilityMap[location[0]][location[1]] += 1);
+            //         }
+            //     }
+            // }
         }
+
         this.probabilityMap = probabilityMap;
     }
 
