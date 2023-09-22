@@ -5,58 +5,97 @@ export default class AI {
     constructor (board) {
         this.board = board;
         this.probabilityMap = null;
-
-        // this.foundShipLocations = [];
-        // this.originalLocation = null;
-        // this.targetDirection = null;
-        // this.latestTargetLocation = null;
-        // this.updateProbabilityMap();
+        this.shipLocations = [];
+        this.latestLocation = null;
     }
 
     getBestMove() {
-        let randomLocation;
-        
-        do {
-            randomLocation = Board.getRandomLocation();
-        } while (!this.board.canAttack(randomLocation));
+        let latestShip;
 
-        return randomLocation;
+        if (this.latestLocation === null) {
+            latestShip = null;
+        } else {
+            latestShip = this.board.getTile(this.latestLocation).ship;
+        }
+
+        if (latestShip != null) {
+            this.shipLocations.push(this.latestLocation);
+
+            if (latestShip.isSunk()) {
+                const area = latestShip.getLocations(latestShip.location);
+
+                this.shipLocations.forEach((location) => {
+                    if (Board.containsLocation(area, location)) {
+                        this.shipLocations.splice(this.shipLocations.indexOf(location), 1);
+                    }
+                });
+            }
+        } 
+
+        if (this.inHuntMode()) {
+            this.updateProbabilityMap();
+        } else {
+            this.updateTargetMap();
+        }
+        
+        const highestProbabilityLocations = this.getHighestProbabilityLocations();
+        const locationToAttack = randomItemOf(highestProbabilityLocations);
+
+        this.latestLocation = locationToAttack;
+
+        return locationToAttack;
     }
 
-    // play() {
-    //     if (this.foundShipParts.length <= 0) {
-    //         const locationToAttack = this.getRandomItem(this.probabilityMap);
-    //         this.board.attack(locationToAttack);
-    //         if (this.board.getTile(locationToAttack).ship !== null) {
-    //             this.foundShipParts.push(locationToAttack);
-    //         }
-    //     } else {
-    //         this.getNextTarget();
-    //     }
-    // }
+    inHuntMode() {
+        return this.shipLocations.length === 0;
+    }
 
-    // getNextTarget() {
-    //     if (this.originalLocationLocation === null) {
-    //         this.originalLocationLocation = this.foundShipLocations[0];
-    //         this.chooseDirection();
-    //     }
+    updateTargetMap() {
+        const targetMap = Board.createMap(() => 0);
+        const potentialShips = this.getPotentialShips();
 
-    //     let nextTargetLocation = this.goForwards();
+        const targetLocations = this.getTargetLocations();
 
-    //     while (!this.board.canAttack(nextTargetLocation)) {
-    //         this.chooseDirection();
-    //         nextTargetLocation = this.goForwards();
-    //     }
+        for (const shipLocation of this.shipLocations) {
+            for (const ship of potentialShips) {
+                let currentLocation = shipLocation;
+                for (let i = 0; i < ship.size; i++) {
+                    const area = ship.getLocations(currentLocation);
 
-    //     this.board.attack(nextTargetLocation);
-    //     this.latestTargetLocation = nextTargetLocation;
+                    if (area.some((location) => !Board.isValidLocation(location) || this.board.getTile(location).isObstacle())) continue;
 
+                    area.forEach((location) => {
+                        if (Board.containsLocation(targetLocations, location)) {
+                            targetMap[location[0]][location[1]]++;
+                        }
+                    });
 
+                    const neighbouringLocation = Board.getNeighbouringLocation(currentLocation, Ship.getOppositeDirection(ship.direction));
+                    if (!Board.isValidLocation(neighbouringLocation)) break;
+                    currentLocation = neighbouringLocation;
+                }   
+            }
+        }
 
+        this.probabilityMap = targetMap;
+    }
 
+    getTargetLocations() {
+        const targetLocations = [];
 
-    // }
+        this.shipLocations.forEach((shipLocation) => {
+            Board.getAdjacentLocations(shipLocation).forEach((adjacentLocation) => {
+                if (!Board.isValidLocation(adjacentLocation)) return;
+                if (this.board.getTile(adjacentLocation).attacked) return;
+                if (Board.containsLocation(targetLocations, shipLocation)) return;
 
+                targetLocations.push(adjacentLocation);
+            });
+        });
+
+        return targetLocations;
+    }
+    
     getHighestProbabilityLocations() {
         let highestChance = 0;
         let highestProbabilityLocations = [];
@@ -71,18 +110,7 @@ export default class AI {
 
             highestProbabilityLocations.push([row, cell]);
         });
-        // for (let i = 0; i < Board.size; i++) {
-        //     for (let j = 0; j < Board.size; j++) {
-        //         if (this.probabilityMap[i][j] < highestChance) continue;
-
-        //         if (this.probabilityMap[i][j] > highestChance) {
-        //             highestChance = probabilityMap[i][j];
-        //             highestProbabilityLocations = [];
-        //         }
-
-        //         highestProbabilityLocations.push([i, j]);
-        //     }
-        // }
+        
         return highestProbabilityLocations;
     }
 
@@ -115,16 +143,6 @@ export default class AI {
 
                 area.forEach((location) => probabilityMap[location[0]][location[1]]++);
             });
-
-            // for (let row = minRow; row <= maxRow; row++) {
-            //     for (let cell = 0; cell <= maxCell; cell++) {
-            //         const area = ship.getLocations([row, cell]);
-            //         if (area.every((location) => !this.board.getTile(location).attacked)) {
-            //             // als hier iets fout gaat dat kan, ik heb iets veranderd
-            //             area.forEach((location) => probabilityMap[location[0]][location[1]] += 1);
-            //         }
-            //     }
-            // }
         }
 
         this.probabilityMap = probabilityMap;
@@ -132,7 +150,7 @@ export default class AI {
 
 }
 
-function getRandomItem(array) {
+function randomItemOf (array) {
     const randomIndex = Math.floor(Math.random() * array.length);
     return array[randomIndex];
   }
