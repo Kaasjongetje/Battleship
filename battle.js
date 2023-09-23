@@ -51,6 +51,11 @@ function playTurn (inputPlayer, location) {
             gameOver = true;
             displayMessage(`${inputPlayer.name} won the game`);
             displayPlayAgain();
+
+            computer.board.ships.forEach((ship) => {
+                if (!ship.isSunk()) displayShip(computer, ship);
+            });
+
             console.log(ai.attacks);
             return;
         }

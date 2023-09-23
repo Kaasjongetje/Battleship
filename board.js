@@ -106,7 +106,31 @@ export default class Board {
     }
 
     static getAdjacentLocations (location) {
-        
+        const adjacentLocations = [];
+
+        for (const direction in Ship.DIRECTIONS) {
+            const neighbouringLocation = Board.getNeighbouringLocation(location, Ship.DIRECTIONS[direction]);
+            const oppositeNeighbouringLocation = Board.getNeighbouringLocation(location, Ship.getOppositeDirection(direction));
+
+            adjacentLocations.push(neighbouringLocation);
+            adjacentLocations.push(oppositeNeighbouringLocation);
+        }
+
+        return adjacentLocations;
+    }
+    
+    static getNeighbouringLocation (location, direction) {
+        const neighbouringRow = location[0] + direction[0];
+        const neighbouringCell = location[1] + direction[1];
+        return [neighbouringRow, neighbouringCell];
+    }
+
+    static containsLocation (array, inputLocation) {
+        return array.some((location) => Board.isSameLocation(location, inputLocation));
+    }
+
+    static isSameLocation(locationA, locationB) {
+        return locationA[0] === locationB[0] && locationA[1] === locationB[1];
     }
 
     placeRandomly (allowTouching) {

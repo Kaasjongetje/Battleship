@@ -218,7 +218,7 @@ export function onRandomLayoutClick () {
 }
 
 export function onGameStart() {
-  computer.board.placeRandomly(false);
+  computer.board.placeRandomly(true);
   setCurrentPlayer(player);
 
   loadPage(getBattle());
