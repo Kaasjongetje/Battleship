@@ -12,6 +12,7 @@ import Ship from "./ship.js";
 import {
     onShipDrag,
     onShipDragStart,
+    onShipDragEnd,
     onTileEnter,
     onTileDrop,
     onTileLeave,
@@ -123,6 +124,7 @@ export function getPreparation() {
             listeners: {
                 start: (e) => onShipDragStart(e, ship),
                 move: (e) => onShipDrag(e),
+                end: () => onShipDragEnd(shipContainer)
             }
         });
         

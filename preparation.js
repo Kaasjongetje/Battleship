@@ -88,12 +88,7 @@ export function onTileEnter (location) {
 }
 
 export function onTileDrop (shipContainer, location) {
-  console.log('drop')
-
-  shipContainer.setAttribute('data-x', 0);
-  shipContainer.setAttribute('data-y', 0);
-  shipContainer.style.transform = 'translate(0px, 0px)';
-
+  resetDrag(shipContainer);
   hideIndicator();
 
   const offsetLocation = getOffsetLocation(location, draggedShip.direction);
@@ -115,14 +110,20 @@ export function onTileLeave () {
   hideIndicator();
 }
 
+function resetDrag (shipContainer) {
+  shipContainer.setAttribute('data-x', 0);
+  shipContainer.setAttribute('data-y', 0);
+  shipContainer.style.transform = 'translate(0px, 0px)';
+
+}
+
 export function onRotatorEnter (ship, rotator, shipContainer) {
   if (draggedShip !== null) return;
 
   shipJustDropped = false;
-  [...document.querySelectorAll('.ship-container')].forEach((shipContainer) => interact(shipContainer).draggable(false));
-
+  
   rotator.classList.add('hover');
-  // interact(shipContainer).draggable(false);
+  [...document.querySelectorAll('.ship-container')].forEach((shipContainer) => interact(shipContainer).draggable(false));
 
   const rotatedClone = getRotatedClone(ship);
 
@@ -150,8 +151,6 @@ export function onRotatorTurn (ship, shipContainer) {
 export function onRotatorLeave (ship, rotator, shipContainer) {
   if (draggedShip !== null) return;
   
-  [...document.querySelectorAll('.ship-container')].forEach((shipContainer) => interact(shipContainer).draggable(true));
-
   hideIndicator();
 
   player.board.place(ship, previousLocation);
@@ -159,7 +158,7 @@ export function onRotatorLeave (ship, rotator, shipContainer) {
   previousLocation = null;
 
   rotator.classList.remove('hover');
-  // interact(shipContainer).draggable(true);
+  [...document.querySelectorAll('.ship-container')].forEach((shipContainer) => interact(shipContainer).draggable(true));
 }
 
 // Voor als je stopt met draggen boven een rotator
@@ -192,6 +191,16 @@ export function onShipDragStart (e, ship) {
 
   player.board.remove(ship);
   setSize(getIndicator(), ship.size, ship.direction);
+}
+
+export function onShipDragEnd (shipContainer) {
+  // Als je een schip loslaat precies tussen twee tiles in
+  // en onTileDrop niet gecalld wordt
+  if (draggedShip != null) {
+    resetDrag(shipContainer);
+    player.board.place(draggedShip, previousLocation);
+    setPosition(shipContainer, previousLocation);
+  }
 }
 
 export function onRandomLayoutClick () {
