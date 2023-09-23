@@ -57,6 +57,10 @@ form {
 
 .board {
     position: relative;
+    /*Zonder dit zou je nog een drag/drop cursor hebben
+    als je een schip loslaat boven een rotator van een
+    ander schip*/
+    cursor: default;
 
     width: 500px;
     height: 500px;

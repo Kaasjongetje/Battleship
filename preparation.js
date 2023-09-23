@@ -17,6 +17,8 @@ import {
 let draggedShip = null;
 let previousLocation = null;
 let offset = null;
+// Voor als je stopt met draggen boven een rotator
+let shipJustDropped = false;
 
 function getIndicator() {
   return document.querySelector('.can-place-indicator');
@@ -86,6 +88,8 @@ export function onTileEnter (location) {
 }
 
 export function onTileDrop (shipContainer, location) {
+  console.log('drop')
+
   shipContainer.setAttribute('data-x', 0);
   shipContainer.setAttribute('data-y', 0);
   shipContainer.style.transform = 'translate(0px, 0px)';
@@ -104,6 +108,7 @@ export function onTileDrop (shipContainer, location) {
   draggedShip = null;
   previousLocation = null;
   offset = null;
+  shipJustDropped = true;
 }
 
 export function onTileLeave () {
@@ -112,6 +117,8 @@ export function onTileLeave () {
 
 export function onRotatorEnter (ship, rotator, shipContainer) {
   if (draggedShip !== null) return;
+
+  shipJustDropped = false;
 
   rotator.classList.add('hover');
   interact(shipContainer).draggable(false);
@@ -152,6 +159,14 @@ export function onRotatorLeave (ship, rotator, shipContainer) {
   interact(shipContainer).draggable(true);
 }
 
+// Voor als je stopt met draggen boven een rotator
+export function onRotatorMouseUp (ship, rotator, shipContainer) {
+  if (shipJustDropped) {
+    onRotatorEnter(ship, rotator, shipContainer);
+    shipJustDropped = false;
+  }
+}
+
 export function onShipDrag (e) {
     const target = e.target;
   
@@ -168,6 +183,7 @@ export function onShipDragStart (e, ship) {
   draggedShip = ship;
   previousLocation = ship.location;
   offset = getOffset(e, ship.size, ship.direction);
+  shipJustDropped = false;
 
   player.board.remove(ship);
   setSize(getIndicator(), ship.size, ship.direction);

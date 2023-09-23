@@ -18,6 +18,7 @@ import {
     onRotatorEnter,
     onRotatorClick,
     onRotatorLeave,
+    onRotatorMouseUp,
     onRandomLayoutClick,
     onGameStart,
 } from "./preparation.js";
@@ -131,6 +132,7 @@ export function getPreparation() {
         rotator.addEventListener('mouseenter', () => onRotatorEnter(ship, rotator, shipContainer));
         rotator.addEventListener('click', () => onRotatorClick(ship, shipContainer));
         rotator.addEventListener('mouseleave', () => onRotatorLeave(ship, rotator, shipContainer));
+        rotator.addEventListener('mouseup', () => onRotatorMouseUp(ship, rotator, shipContainer));
 
         shipContainer.appendChild(rotator);
     });
