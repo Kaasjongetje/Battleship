@@ -7,6 +7,7 @@ export default class AI {
         this.probabilityMap = null;
         this.shipLocations = [];
         this.latestLocation = null;
+        this.attacks = 0;
     }
 
     getBestMove() {
@@ -24,11 +25,7 @@ export default class AI {
             if (latestShip.isSunk()) {
                 const area = latestShip.getLocations(latestShip.location);
 
-                this.shipLocations.forEach((location) => {
-                    if (Board.containsLocation(area, location)) {
-                        this.shipLocations.splice(this.shipLocations.indexOf(location), 1);
-                    }
-                });
+                this.shipLocations = this.shipLocations.filter(shipLocation => !Board.containsLocation(area, shipLocation));
             }
         } 
 
@@ -43,6 +40,7 @@ export default class AI {
 
         this.latestLocation = locationToAttack;
 
+        this.attacks++;
         return locationToAttack;
     }
 
@@ -50,6 +48,7 @@ export default class AI {
         return this.shipLocations.length === 0;
     }
 
+    // Deze functie controleren
     updateTargetMap() {
         const targetMap = Board.createMap(() => 0);
         const potentialShips = this.getPotentialShips();
@@ -62,13 +61,20 @@ export default class AI {
                 for (let i = 0; i < ship.size; i++) {
                     const area = ship.getLocations(currentLocation);
 
-                    if (area.some((location) => !Board.isValidLocation(location) || this.board.getTile(location).isObstacle())) continue;
-
-                    area.forEach((location) => {
-                        if (Board.containsLocation(targetLocations, location)) {
-                            targetMap[location[0]][location[1]]++;
-                        }
-                    });
+                    if (area.every((location) => Board.isValidLocation(location) && !this.board.getTile(location).isObstacle())) {
+                        area.forEach((location) => {
+                            if (Board.containsLocation(targetLocations, location)) {
+                                targetMap[location[0]][location[1]]++;
+                            }
+                        });
+                    }
+                    // if (!area.some((location) => !Board.isValidLocation(location) || this.board.getTile(location).isObstacle())) {
+                    //     area.forEach((location) => {
+                    //         if (Board.containsLocation(targetLocations, location)) {
+                    //             targetMap[location[0]][location[1]]++;
+                    //         }
+                    //     });
+                    // }
 
                     const neighbouringLocation = Board.getNeighbouringLocation(currentLocation, Ship.getOppositeDirection(ship.direction));
                     if (!Board.isValidLocation(neighbouringLocation)) break;

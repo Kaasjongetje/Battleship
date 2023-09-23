@@ -39,7 +39,7 @@ function playTurn (inputPlayer, location) {
         currentPlayer = opponent;
         displayMessage(`It's ${opponent.name}'s turn`);
 
-        if (opponent === computer) playTurn(opponent, ai.getBestMove());
+        if (opponent === computer) playComputerTurn();
         
         return;
     }
@@ -51,13 +51,25 @@ function playTurn (inputPlayer, location) {
             gameOver = true;
             displayMessage(`${inputPlayer.name} won the game`);
             displayPlayAgain();
+            console.log(ai.attacks);
             return;
         }
     }
 
     displayMessage(`${inputPlayer.name} hit a ship, he/she can shoot another time`);
 
-    if (inputPlayer === computer) playTurn(computer, ai.getBestMove());
+    if (inputPlayer === computer) playComputerTurn();
+}
+
+function playComputerTurn() {
+    const messageElement = document.querySelector('.message'); 
+
+    const addDot = () => messageElement.textContent += '.';
+
+    addDot();
+    setTimeout(addDot, 200);
+    setTimeout(addDot, 400);
+    setTimeout(() => playTurn(computer, ai.getBestMove()), 600);
 }
 
 function displayAttack (attackedPlayer, location, hit) {
