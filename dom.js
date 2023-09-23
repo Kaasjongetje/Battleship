@@ -16,7 +16,6 @@ import {
     onTileDrop,
     onTileLeave,
     onRotatorEnter,
-    onRotatorClick,
     onRotatorLeave,
     onRotatorMouseUp,
     onRandomLayoutClick,
@@ -130,7 +129,6 @@ export function getPreparation() {
         const rotator = createElement('rotator');
 
         rotator.addEventListener('mouseenter', () => onRotatorEnter(ship, rotator, shipContainer));
-        rotator.addEventListener('click', () => onRotatorClick(ship, shipContainer));
         rotator.addEventListener('mouseleave', () => onRotatorLeave(ship, rotator, shipContainer));
         rotator.addEventListener('mouseup', () => onRotatorMouseUp(ship, rotator, shipContainer));
 

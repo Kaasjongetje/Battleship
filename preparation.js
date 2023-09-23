@@ -119,9 +119,10 @@ export function onRotatorEnter (ship, rotator, shipContainer) {
   if (draggedShip !== null) return;
 
   shipJustDropped = false;
+  [...document.querySelectorAll('.ship-container')].forEach((shipContainer) => interact(shipContainer).draggable(false));
 
   rotator.classList.add('hover');
-  interact(shipContainer).draggable(false);
+  // interact(shipContainer).draggable(false);
 
   const rotatedClone = getRotatedClone(ship);
 
@@ -134,7 +135,7 @@ export function onRotatorEnter (ship, rotator, shipContainer) {
   setPosition(getIndicator(), previousLocation);
 }
 
-export function onRotatorClick (ship, shipContainer) {
+export function onRotatorTurn (ship, shipContainer) {
   const rotatedClone = getRotatedClone(ship);
 
   if (!player.board.canPlace(rotatedClone, previousLocation)) return;
@@ -149,6 +150,8 @@ export function onRotatorClick (ship, shipContainer) {
 export function onRotatorLeave (ship, rotator, shipContainer) {
   if (draggedShip !== null) return;
   
+  [...document.querySelectorAll('.ship-container')].forEach((shipContainer) => interact(shipContainer).draggable(true));
+
   hideIndicator();
 
   player.board.place(ship, previousLocation);
@@ -156,7 +159,7 @@ export function onRotatorLeave (ship, rotator, shipContainer) {
   previousLocation = null;
 
   rotator.classList.remove('hover');
-  interact(shipContainer).draggable(true);
+  // interact(shipContainer).draggable(true);
 }
 
 // Voor als je stopt met draggen boven een rotator
@@ -164,6 +167,8 @@ export function onRotatorMouseUp (ship, rotator, shipContainer) {
   if (shipJustDropped) {
     onRotatorEnter(ship, rotator, shipContainer);
     shipJustDropped = false;
+  } else {
+    onRotatorTurn(ship, shipContainer);
   }
 }
 
